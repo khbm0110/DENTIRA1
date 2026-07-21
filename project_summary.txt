@@ -1,0 +1,384 @@
+--- PROJECT STRUCTURE ---
+.
+./supabase
+./supabase/migrations
+./supabase/migrations/001_security_rls.sql
+./project_backup.zip
+./postcss.config.js
+./package.json
+./src
+./src/components
+./src/components/sections
+./src/components/shared
+./src/components/common
+./src/components/ui
+./src/components/BookingModal.tsx
+./src/middleware.ts
+./src/config
+./src/config/dentora-system.ts
+./src/app
+./src/app/[lang]
+./src/app/layout.tsx
+./src/lib
+./src/lib/supabase
+./src/lib/stores
+./src/lib/i18n
+./documentation.md
+./public
+./public/workbox-f1770938.js
+./public/sitemap.xml
+./public/sw.js
+./public/images
+./public/icons
+./public/robots.txt
+./public/swe-worker-5c72df51bb1f6ee0.js
+./public/manifest.json
+./ziRtuRz5
+./tsconfig.json
+./tailwind.config.js
+./package-lock.json
+./backup.py
+./don
+./don/I18n-Professional-Dictionary.txt
+./don/UI-Architecture-Reference.txt
+./don/System-Core-Config.txt
+./don/Project-Architecture-Skeleton.txt
+./don/Admin-Supabase-Logic.txt
+./don/App-Like-Mobile-UI.txt
+./don/FireShot Capture 001 - Dentora - Excellence en Medecine Dentaire_ - [9000-firebase-dontira-1774736043066.cluster-ikslh4rdsnbqsvu5nw3v4dqjj2.cloudworkstations.dev].png
+./backup.tar.gz
+./create_zip.py
+./next.config.js
+./next-env.d.ts
+./project_summary.txt
+
+--- CONFIGURATION FILES ---
+
+FILE: ./package.json
+{
+  "name": "dentora-clinic-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ducanh2912/next-pwa": "^10.2.9",
+    "@supabase/supabase-js": "^2.100.1",
+    "@tailwindcss/forms": "^0.5.11",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^1.7.0",
+    "next": "^14.2.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "zustand": "^5.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
+
+FILE: ./tsconfig.json
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
+
+FILE: ./tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+          dark: "hsl(var(--primary-dark))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        surface: "hsl(var(--surface))",
+        'on-surface': "hsl(var(--on-surface))",
+        'surface-container': "hsl(var(--surface-container))",
+        'surface-bright': "hsl(var(--surface-bright))",
+        'outline-variant': "hsl(var(--outline-variant))",
+      },
+      fontFamily: {
+        'heading': ['var(--font-headline)', 'Manrope', 'sans-serif'],
+        'headline': ['var(--font-headline)', 'Manrope', 'sans-serif'],
+        'body': ['var(--font-body)', 'Inter', 'sans-serif'],
+      },
+      boxShadow: {
+        'clinical-shadow': '0px 4px 16px rgba(0, 0, 0, 0.05)',
+        'clinical-shadow-lg': '0px 8px 24px rgba(0, 0, 0, 0.07)',
+      },
+      borderRadius: {
+        '2xl': '1rem',
+        '3xl': '1.5rem',
+        '4xl': '2rem',
+        '5xl': '2.5rem',
+        '6xl': '3rem',
+      },
+      animation: {
+        'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
+        'spin-slow': 'spin 3s linear infinite',
+      },
+      keyframes: {
+        'bounce-subtle': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms')({
+      strategy: 'class',
+    }),
+  ],
+};
+
+FILE: ./.next/package.json
+{"type": "commonjs"}
+FILE: ./next.config.js
+// DENTORA-OS - NEXT.JS CONFIGURATION
+// PWA Support using @ducanh2912/next-pwa
+
+const withPWA = require('@ducanh2912/next-pwa').default({
+  dest: 'public',
+  cacheOnFrontEndNav: true,
+  aggressiveFrontEndNavCaching: true,
+  reloadOnOnline: true,
+  disable: process.env.NODE_ENV === 'development',
+  workboxOptions: {
+    disableDevLogs: true,
+  },
+  // PWA Manifest configuration
+  manifest: {
+    name: 'Dentora - Clinical Dental Excellence',
+    short_name: 'Dentora',
+    description: 'Advanced dental solutions and personalized care for optimal oral health in Casablanca',
+    theme_color: '#36C2CF',
+    background_color: '#ffffff',
+    display: 'standalone',
+    orientation: 'portrait-primary',
+    scope: '/',
+    start_url: '/',
+    icons: [
+      {
+        src: '/icons/icon-72x72.png',
+        sizes: '72x72',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/icon-96x96.png',
+        sizes: '96x96',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/icon-128x128.png',
+        sizes: '128x128',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/icon-144x144.png',
+        sizes: '144x144',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/icon-152x152.png',
+        sizes: '152x152',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'any maskable',
+      },
+      {
+        src: '/icons/icon-384x384.png',
+        sizes: '384x384',
+        type: 'image/png',
+      },
+      {
+        src: '/icons/icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any maskable',
+      },
+    ],
+  },
+});
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  // React strict mode for better development experience
+  reactStrictMode: true,
+  
+  // Image optimization configuration
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.mixkit.co',
+      },
+    ],
+    // Enable modern image formats
+    formats: ['image/avif', 'image/webp'],
+  },
+  
+  // Compiler options for performance
+  compiler: {
+    // Remove console.log in production
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
+  // Experimental features for performance
+  experimental: {
+    // Optimize package imports for smaller bundles
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
+  
+  // Headers for security and performance
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+      {
+        // Cache static assets aggressively
+        source: '/icons/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        // Cache images
+        source: '/images/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, stale-while-revalidate=604800',
+          },
+        ],
+      },
+    ];
+  },
+};
+
+module.exports = withPWA(nextConfig);

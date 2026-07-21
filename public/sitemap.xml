@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- French Version -->
+  <url>
+    <loc>https://dentora.ma/fr</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dentora.ma/ar"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dentora.ma/fr"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dentora.ma/fr"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Arabic Version -->
+  <url>
+    <loc>https://dentora.ma/ar</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dentora.ma/fr"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dentora.ma/ar"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dentora.ma/fr"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Services Pages -->
+  <url>
+    <loc>https://dentora.ma/fr/services/implantology</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dentora.ma/ar/services/implantology"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dentora.ma/fr/services/implantology"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://dentora.ma/fr/services/orthodontics</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dentora.ma/ar/services/orthodontics"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dentora.ma/fr/services/orthodontics"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://dentora.ma/fr/services/whitening</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dentora.ma/ar/services/whitening"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dentora.ma/fr/services/whitening"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://dentora.ma/fr/services/pedodontics</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dentora.ma/ar/services/pedodontics"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dentora.ma/fr/services/pedodontics"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- About Page -->
+  <url>
+    <loc>https://dentora.ma/fr/about</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dentora.ma/ar/about"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dentora.ma/fr/about"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Contact Page -->
+  <url>
+    <loc>https://dentora.ma/fr/contact</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://dentora.ma/ar/contact"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://dentora.ma/fr/contact"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>
