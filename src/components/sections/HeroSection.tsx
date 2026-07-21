@@ -7,6 +7,8 @@ import dictionary from '@/lib/i18n/dictionary';
 import BookingModal, { BookingModalRef } from '../BookingModal';
 import { Star, ShieldCheck, Users, ArrowRight, Calendar } from 'lucide-react';
 
+import WorkingHoursBar from './WorkingHoursBar';
+
 export default function Hero() {
   const targetRef = useRef<HTMLDivElement>(null);
   const bookingModalRef = useRef<BookingModalRef>(null);
@@ -21,16 +23,6 @@ export default function Hero() {
   const params = useParams();
   const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
   const t = lang === 'ar' ? dictionary.ar : dictionary.fr;
-
-  const workingHours = [
-    { day: t.contact.monday, time: '09:00 - 18:00' },
-    { day: t.contact.tuesday, time: '09:00 - 18:00' },
-    { day: t.contact.wednesday, time: '09:00 - 18:00' },
-    { day: t.contact.thursday, time: '09:00 - 18:00' },
-    { day: t.contact.friday, time: '09:00 - 18:00' },
-    { day: t.contact.saturday, time: '10:00 - 14:00' },
-    { day: t.contact.sunday, time: t.contact.closed },
-  ];
 
   const handleBookingClick = () => {
     bookingModalRef.current?.openModal();
@@ -189,21 +181,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.div 
-          style={{ y, opacity }}
-          className="absolute bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl p-5 border-t border-white shadow-[0_-10px_40px_rgb(0,0,0,0.03)] z-20"
-        >
-          <div className="max-w-7xl mx-auto flex justify-between text-center overflow-x-auto no-scrollbar gap-4 px-4">
-            {workingHours.map((item, index) => (
-              <div key={index} className="p-2 flex-shrink-0 min-w-[100px]">
-                <p className="text-sm font-bold text-on-surface mb-1">{item.day}</p>
-                <p className={`text-xs font-mono font-medium bg-surface py-1 px-3 rounded-full inline-block ${item.time === t.contact.closed ? 'text-red-500 bg-red-50' : 'text-on-surface-variant'}`}>
-                  {item.time}
-                </p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+        <WorkingHoursBar />
 
       </section>
       <BookingModal ref={bookingModalRef} />
