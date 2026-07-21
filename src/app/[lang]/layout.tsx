@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import NavigationBar from '../../components/common/NavigationBar';
 import Footer from '../../components/common/Footer';
 import FloatingActions from '../../components/shared/FloatingActions';
@@ -67,6 +68,8 @@ const jsonLd = {
 
 export default function RootLayout({ children, params }: { children: React.ReactNode; params: { lang: string } }) {
   const isRTL = params.lang === 'ar';
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.includes('/admin');
   
   return (
     <html lang={params.lang} dir={isRTL ? 'rtl' : 'ltr'} className={`${manrope.variable} ${inter.variable}`}>
@@ -79,10 +82,10 @@ export default function RootLayout({ children, params }: { children: React.React
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body suppressHydrationWarning className="bg-surface text-on-surface font-body selection:bg-primary/20 overflow-x-hidden scroll-smooth">
-        <NavigationBar />
+        {!isAdminRoute && <NavigationBar />}
         <main>{children}</main>
-        <Footer />
-        <FloatingActions />
+        {!isAdminRoute && <Footer />}
+        {!isAdminRoute && <FloatingActions />}
         <ToastContainer />
       </body>
     </html>
