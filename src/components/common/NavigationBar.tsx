@@ -116,6 +116,11 @@ export default function NavigationBar() {
             </div>
             <span className="hidden lg:inline">{t.common.phone_number}</span>
           </a>
+          
+          <div className="mx-1">
+            <LanguageSwitcher />
+          </div>
+
           <button 
             onClick={handleBookingClick}
             className="bg-primary text-white px-7 py-2.5 rounded-full text-sm font-bold shadow-[0_4px_14px_0_rgb(0,105,113,0.39)] hover:shadow-[0_6px_20px_rgba(0,105,113,0.23)] hover:-translate-y-0.5 transition-all duration-300">
@@ -181,7 +186,7 @@ export default function NavigationBar() {
                   ))}
                 </nav>
 
-                <div className="mb-6">
+                <div className="mb-6 flex justify-center">
                   <LanguageSwitcher />
                 </div>
 

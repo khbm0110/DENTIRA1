@@ -13,39 +13,44 @@ export default function LanguageSwitcher() {
   const { setLanguage } = useAppStore();
   
   const currentLocale = (params.lang as string) || 'fr';
-  const targetLocale = currentLocale === 'fr' ? 'ar' : 'fr';
 
-  const handleSwitch = () => {
-    setLanguage(targetLocale);
-    document.cookie = `NEXT_LOCALE=${targetLocale}; path=/; max-age=31536000`;
+  const handleSwitch = (newLocale: 'fr' | 'ar') => {
+    if (currentLocale === newLocale) return;
+    
+    setLanguage(newLocale);
+    document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000`;
 
     const newPath = pathname.startsWith(`/${currentLocale}`)
-      ? `/${targetLocale}${pathname.substring(1 + currentLocale.length)}`
-      : `/${targetLocale}${pathname}`;
+      ? `/${newLocale}${pathname.substring(1 + currentLocale.length)}`
+      : `/${newLocale}${pathname}`;
 
     router.push(newPath);
   };
 
   return (
-    <button
-      onClick={handleSwitch}
-      className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all text-sm font-medium"
-      aria-label={`Switch to ${targetLocale === 'fr' ? 'French' : 'Arabic'}`}
-    >
-      <span className="text-xs font-bold uppercase">{targetLocale}</span>
-      <svg
-        className="w-4 h-4"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+    <div className="flex items-center bg-surface/50 backdrop-blur-sm border border-outline-variant/30 rounded-full p-1 shadow-sm">
+      <button
+        onClick={() => handleSwitch('fr')}
+        className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 flex items-center gap-1.5 ${
+          currentLocale === 'fr' 
+            ? 'bg-white text-primary shadow-[0_2px_8px_rgba(0,0,0,0.08)]' 
+            : 'text-on-surface-variant hover:text-on-surface'
+        }`}
+        aria-label="Switch to French"
       >
-        <circle cx="12" cy="12" r="10" />
-        <line x1="2" y1="12" x2="22" y2="12" />
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-      </svg>
-    </button>
+        <span className="text-base leading-none">🇫🇷</span> FR
+      </button>
+      <button
+        onClick={() => handleSwitch('ar')}
+        className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 flex items-center gap-1.5 ${
+          currentLocale === 'ar' 
+            ? 'bg-white text-primary shadow-[0_2px_8px_rgba(0,0,0,0.08)]' 
+            : 'text-on-surface-variant hover:text-on-surface'
+        }`}
+        aria-label="Switch to Arabic"
+      >
+        <span className="text-base leading-none">🇲🇦</span> AR
+      </button>
+    </div>
   );
 }

@@ -88,13 +88,6 @@ function detectLocale(request: NextRequest): string {
   }
 
   // Default to system locale or default locale
-  const systemLocale = request.headers.get('x-vercel-ip-country') || '';
-  
-  // Morocco uses Arabic, so prioritize Arabic for MA
-  if (systemLocale === 'MA') {
-    return 'ar';
-  }
-
   return defaultLocale;
 }
 
