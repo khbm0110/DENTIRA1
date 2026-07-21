@@ -34,20 +34,24 @@ export default function Hero() {
         ref={targetRef}
         className="relative min-h-[100svh] flex flex-col justify-center pt-32 pb-40 px-6 overflow-hidden bg-white"
       >
-        {/* Subtle Decorative Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-primary/5 blur-[120px] mix-blend-multiply" />
-          <div className="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-teal-50/50 blur-[100px] mix-blend-multiply" />
+        {/* Background Image with Gradient Overlay */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <img
+            src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80"
+            alt="Clinic"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
         </div>
 
-        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 lg:gap-8 items-center z-10">
+        <div className="max-w-7xl mx-auto w-full flex items-center z-10 relative">
           
           {/* Left Column: Text & CTA */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: [0.25, 1, 0.5, 1] }}
-            className="flex flex-col items-start"
+            className="flex flex-col items-start max-w-3xl"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-semibold text-sm mb-8 border border-primary/20 shadow-sm">
               <span className="relative flex h-2 w-2">
@@ -112,72 +116,6 @@ export default function Hero() {
                 <span>15+ Ans d'Expérience</span>
               </div>
             </div>
-          </motion.div>
-
-          {/* Right Column: Visual */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
-            className="relative lg:ml-auto w-full max-w-lg mx-auto lg:mx-0"
-          >
-            {/* Soft Glow Behind Media */}
-            <div className="absolute inset-0 bg-primary/20 blur-[60px] rounded-full scale-90 translate-y-8" />
-            
-            <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden border-[8px] border-white shadow-[0_20px_50px_rgb(0,0,0,0.08)]">
-              <img
-                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80"
-                alt="Clinic"
-                className="w-full h-full object-cover"
-              />
-              {/* White gradient overlay to match reference */}
-              <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent pointer-events-none" />
-              
-              {/* Floating Badge on Image */}
-              <motion.div 
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 1 }}
-                className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md rounded-2xl p-4 shadow-lg flex items-center gap-3"
-              >
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-                  <Users size={20} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-on-surface">5000+</p>
-                  <p className="text-xs font-medium text-on-surface-variant">Patients Souriants</p>
-                </div>
-              </motion.div>
-            </div>
-            
-            {/* Decorative dot grid or organic shapes could go here */}
-            <svg className="absolute -bottom-10 -left-10 w-32 h-32 text-primary/10 -z-10" viewBox="0 0 100 100" fill="currentColor">
-              <circle cx="10" cy="10" r="2" />
-              <circle cx="30" cy="10" r="2" />
-              <circle cx="50" cy="10" r="2" />
-              <circle cx="70" cy="10" r="2" />
-              <circle cx="90" cy="10" r="2" />
-              <circle cx="10" cy="30" r="2" />
-              <circle cx="30" cy="30" r="2" />
-              <circle cx="50" cy="30" r="2" />
-              <circle cx="70" cy="30" r="2" />
-              <circle cx="90" cy="30" r="2" />
-              <circle cx="10" cy="50" r="2" />
-              <circle cx="30" cy="50" r="2" />
-              <circle cx="50" cy="50" r="2" />
-              <circle cx="70" cy="50" r="2" />
-              <circle cx="90" cy="50" r="2" />
-              <circle cx="10" cy="70" r="2" />
-              <circle cx="30" cy="70" r="2" />
-              <circle cx="50" cy="70" r="2" />
-              <circle cx="70" cy="70" r="2" />
-              <circle cx="90" cy="70" r="2" />
-              <circle cx="10" cy="90" r="2" />
-              <circle cx="30" cy="90" r="2" />
-              <circle cx="50" cy="90" r="2" />
-              <circle cx="70" cy="90" r="2" />
-              <circle cx="90" cy="90" r="2" />
-            </svg>
           </motion.div>
         </div>
 

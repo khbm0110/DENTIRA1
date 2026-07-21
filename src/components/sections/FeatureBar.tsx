@@ -33,7 +33,7 @@ export default function FeatureBar() {
   ];
 
   return (
-    <section className="bg-surface relative z-20 -mt-10 px-6 pb-16">
+    <section className="bg-surface relative z-20 px-6 py-16">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
