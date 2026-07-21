@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ArrowLeft, Save, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { addBlogPost } from '@/app/actions/admin';
 
 const postSchema = z.object({
   title_fr: z.string().min(2, 'Title is required'),
@@ -20,7 +22,9 @@ type PostFormValues = z.infer<typeof postSchema>;
 
 export default function NewPostPage({ params }: { params: { lang: string } }) {
   const { lang } = params;
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'fr' | 'ar'>('fr');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm<PostFormValues>({
     resolver: zodResolver(postSchema) as any,
@@ -30,8 +34,24 @@ export default function NewPostPage({ params }: { params: { lang: string } }) {
   });
 
   const onSubmit = async (data: PostFormValues) => {
-    console.log('Form data:', data);
-    alert('Post saved successfully! (Mock)');
+    setIsSubmitting(true);
+    try {
+      await addBlogPost({
+        title_fr: data.title_fr,
+        title_ar: data.title_ar,
+        content_fr: data.content_fr,
+        content_ar: data.content_ar,
+        slug: data.slug,
+        is_published: data.status === 'published',
+        image_url: null,
+      });
+      router.push(`/${lang}/admin/blog`);
+    } catch (error) {
+      console.error(error);
+      alert('Failed to save post');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

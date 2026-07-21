@@ -4,10 +4,10 @@ import { useParams } from 'next/navigation';
 import dictionary from '@/lib/i18n/dictionary';
 import { Users, Star, Award, ShieldPlus } from 'lucide-react';
 
-export default function StatisticsSection() {
+export default function StatisticsSection({ lang }: { lang?: string }) {
   const params = useParams();
-  const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
-  const t = lang === 'ar' ? dictionary.ar : dictionary.fr;
+  const currentLang = lang || (Array.isArray(params.lang) ? params.lang[0] : params.lang) || 'fr';
+  const t = currentLang === 'ar' ? dictionary.ar : dictionary.fr;
 
   const stats = [
     {

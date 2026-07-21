@@ -8,18 +8,18 @@ import StatisticsSection from '../../components/sections/StatisticsSection';
 import BlogSection from '../../components/sections/BlogSection';
 import BookingSection from '../../components/sections/BookingSection';
 
-export default function Home() {
+export default function Home({ params }: { params: { lang: string } }) {
   return (
     <>
-      <HeroSection />
-      <FeatureBar />
-      <WhyChooseUsSection />
-      <ServicesSection />
-      <TestimonialsSection />
-      <DoctorsTeamSection />
-      <StatisticsSection />
-      <BlogSection />
-      <BookingSection />
+      <HeroSection lang={params.lang} />
+      <FeatureBar lang={params.lang} />
+      <WhyChooseUsSection lang={params.lang} />
+      <ServicesSection lang={params.lang} />
+      <TestimonialsSection lang={params.lang} />
+      <DoctorsTeamSection lang={params.lang} />
+      <StatisticsSection lang={params.lang} />
+      <BlogSection lang={params.lang} />
+      <BookingSection lang={params.lang} />
     </>
   );
 }

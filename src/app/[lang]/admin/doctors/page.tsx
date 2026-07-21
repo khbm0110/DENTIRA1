@@ -1,15 +1,19 @@
 import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/server';
 
-export default function DoctorsAdminPage({ params }: { params: { lang: string } }) {
+export default async function DoctorsAdminPage({ params }: { params: { lang: string } }) {
   const { lang } = params;
+  const supabase = createClient();
   
-  // In a real app, this would be fetched from Supabase
-  const doctors = [
-    { id: 1, name_fr: 'Dr. Sarah Martin', specialty_fr: 'Orthodontiste', status: 'Active' },
-    { id: 2, name_fr: 'Dr. Karim Benali', specialty_fr: 'Implantologue', status: 'Active' },
-    { id: 3, name_fr: 'Dr. Amina Tazi', specialty_fr: 'Pédodontiste', status: 'Inactive' },
-  ];
+  const { data: doctors = [], error } = await supabase
+    .from('doctors')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching doctors:', error);
+  }
 
   return (
     <div className="space-y-6">
@@ -52,7 +56,7 @@ export default function DoctorsAdminPage({ params }: { params: { lang: string } 
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {doctors.map((doctor) => (
+            {doctors && doctors.map((doctor) => (
               <tr key={doctor.id} className="hover:bg-slate-50/50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
@@ -63,9 +67,9 @@ export default function DoctorsAdminPage({ params }: { params: { lang: string } 
                 <td className="px-6 py-4">{doctor.specialty_fr}</td>
                 <td className="px-6 py-4">
                   <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                    doctor.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+                    doctor.is_active ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
                   }`}>
-                    {doctor.status}
+                    {doctor.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right">

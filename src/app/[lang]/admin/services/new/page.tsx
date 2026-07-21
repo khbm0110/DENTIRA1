@@ -6,13 +6,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ArrowLeft, Save, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { addService } from '@/app/actions/admin';
 
 const serviceSchema = z.object({
   name_fr: z.string().min(2, 'Name is required'),
   name_ar: z.string().min(2, 'Arabic name is required'),
   description_fr: z.string().min(10, 'Description is required'),
   description_ar: z.string().min(10, 'Arabic description is required'),
-  icon_name: z.string(),
+  icon_name: z.string().optional(),
   is_active: z.boolean().default(true),
 });
 
@@ -20,7 +22,9 @@ type ServiceFormValues = z.infer<typeof serviceSchema>;
 
 export default function NewServicePage({ params }: { params: { lang: string } }) {
   const { lang } = params;
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'fr' | 'ar'>('fr');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm<ServiceFormValues>({
     resolver: zodResolver(serviceSchema) as any,
@@ -30,8 +34,24 @@ export default function NewServicePage({ params }: { params: { lang: string } })
   });
 
   const onSubmit = async (data: ServiceFormValues) => {
-    console.log('Form data:', data);
-    alert('Service saved successfully! (Mock)');
+    setIsSubmitting(true);
+    try {
+      await addService({
+        name_fr: data.name_fr,
+        name_ar: data.name_ar,
+        description_fr: data.description_fr,
+        description_ar: data.description_ar,
+        icon_name: data.icon_name || null,
+        is_active: data.is_active,
+        image_url: null, // Placeholder for image upload
+      });
+      router.push(`/${lang}/admin/services`);
+    } catch (error) {
+      console.error(error);
+      alert('Failed to save service');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

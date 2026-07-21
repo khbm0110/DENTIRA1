@@ -1,16 +1,21 @@
-'use client';
-
-import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 import { ArrowRight } from 'lucide-react';
+import { createClient } from '@/lib/supabase/server';
 
-export default function ServicesSection() {
-  const params = useParams();
-  const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
-  const t = lang === 'ar' ? dictionary.ar : dictionary.fr;
+export default async function ServicesSection({ lang }: { lang?: string }) {
+  const currentLang = lang || 'fr';
+  const t = currentLang === 'ar' ? dictionary.ar : dictionary.fr;
+  const supabase = createClient();
+  
+  const { data: servicesData } = await supabase
+    .from('services')
+    .select('*')
+    .eq('is_active', true)
+    .order('created_at', { ascending: false })
+    .limit(4);
 
-  const services = [
+  const defaultServices = [
     {
       title: "Implantologie",
       desc: "Remplacement de dents manquantes par des implants en titane.",
@@ -33,6 +38,14 @@ export default function ServicesSection() {
     }
   ];
 
+  const displayServices = servicesData && servicesData.length > 0 
+    ? servicesData.map(s => ({
+        title: currentLang === 'ar' ? s.name_ar : s.name_fr,
+        desc: currentLang === 'ar' ? s.description_ar : s.description_fr,
+        img: s.image_url || "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80"
+      }))
+    : defaultServices;
+
   return (
     <section id="services" className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
@@ -46,7 +59,7 @@ export default function ServicesSection() {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service, index) => (
+          {displayServices.map((service, index) => (
             <div key={index} className="bg-surface rounded-3xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)]">
               <div className="aspect-[4/3] w-full overflow-hidden relative">
                 <Image
@@ -60,7 +73,7 @@ export default function ServicesSection() {
               </div>
               <div className="p-8">
                 <h3 className="font-headline font-bold text-xl mb-3 text-on-surface">{service.title}</h3>
-                <p className="text-on-surface-variant text-sm leading-relaxed mb-6">
+                <p className="text-on-surface-variant text-sm leading-relaxed mb-6 line-clamp-3">
                   {service.desc}
                 </p>
                 <button className="flex items-center gap-2 text-primary font-bold text-sm group-hover:gap-3 transition-all">

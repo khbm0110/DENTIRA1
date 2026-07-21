@@ -1,15 +1,20 @@
-'use client';
-
-import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
+import { createClient } from '@/lib/supabase/server';
 
-export default function DoctorsTeamSection() {
-  const params = useParams();
-  const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
-  const t = lang === 'ar' ? dictionary.ar : dictionary.fr;
+export default async function DoctorsTeamSection({ lang }: { lang?: string }) {
+  const currentLang = lang || 'fr';
+  const t = currentLang === 'ar' ? dictionary.ar : dictionary.fr;
+  const supabase = createClient();
+  
+  const { data: doctorsData } = await supabase
+    .from('doctors')
+    .select('*')
+    .eq('is_active', true)
+    .order('created_at', { ascending: true })
+    .limit(4);
 
-  const doctors = [
+  const defaultDoctors = [
     {
       name: "Dr. Laila El Amrani",
       title: "Chirurgien-dentiste en chef",
@@ -32,6 +37,14 @@ export default function DoctorsTeamSection() {
     }
   ];
 
+  const displayDoctors = doctorsData && doctorsData.length > 0 
+    ? doctorsData.map(d => ({
+        name: currentLang === 'ar' ? d.name_ar : d.name_fr,
+        title: currentLang === 'ar' ? d.specialty_ar : d.specialty_fr,
+        img: d.image_url || "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80"
+      }))
+    : defaultDoctors;
+
   return (
     <section id="team" className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
@@ -45,7 +58,7 @@ export default function DoctorsTeamSection() {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {doctors.map((doctor, index) => (
+          {displayDoctors.map((doctor, index) => (
             <div key={index} className="bg-surface rounded-3xl overflow-hidden group shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-300">
               <div className="aspect-[3/4] w-full overflow-hidden relative">
                 <Image

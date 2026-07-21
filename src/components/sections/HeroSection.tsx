@@ -10,7 +10,7 @@ import { Star, ShieldCheck, Users, ArrowRight, Calendar } from 'lucide-react';
 
 import WorkingHoursBar from './WorkingHoursBar';
 
-export default function Hero() {
+export default function Hero({ lang }: { lang?: string }) {
   const targetRef = useRef<HTMLDivElement>(null);
   const bookingModalRef = useRef<BookingModalRef>(null);
   const { scrollYProgress } = useScroll({
@@ -22,8 +22,8 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   const params = useParams();
-  const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
-  const t = lang === 'ar' ? dictionary.ar : dictionary.fr;
+  const currentLang = lang || (Array.isArray(params.lang) ? params.lang[0] : params.lang) || 'fr';
+  const t = currentLang === 'ar' ? dictionary.ar : dictionary.fr;
 
   const handleBookingClick = () => {
     bookingModalRef.current?.openModal();

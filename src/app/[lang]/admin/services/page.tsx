@@ -1,14 +1,19 @@
 import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/server';
 
-export default function ServicesAdminPage({ params }: { params: { lang: string } }) {
+export default async function ServicesAdminPage({ params }: { params: { lang: string } }) {
   const { lang } = params;
+  const supabase = createClient();
   
-  const services = [
-    { id: 1, name_fr: 'Blanchiment Dentaire', status: 'Active' },
-    { id: 2, name_fr: 'Implantologie', status: 'Active' },
-    { id: 3, name_fr: 'Orthodontie', status: 'Inactive' },
-  ];
+  const { data: services = [], error } = await supabase
+    .from('services')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching services:', error);
+  }
 
   return (
     <div className="space-y-6">
@@ -47,14 +52,14 @@ export default function ServicesAdminPage({ params }: { params: { lang: string }
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {services.map((service) => (
+            {services && services.map((service) => (
               <tr key={service.id} className="hover:bg-slate-50/50 transition-colors">
                 <td className="px-6 py-4 font-bold text-slate-800">{service.name_fr}</td>
                 <td className="px-6 py-4">
                   <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                    service.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+                    service.is_active ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
                   }`}>
-                    {service.status}
+                    {service.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right">

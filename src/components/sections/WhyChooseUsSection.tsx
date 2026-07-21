@@ -5,10 +5,10 @@ import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 import { CheckCircle } from 'lucide-react';
 
-export default function WhyChooseUsSection() {
+export default function WhyChooseUsSection({ lang }: { lang?: string }) {
   const params = useParams();
-  const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
-  const t = lang === 'ar' ? dictionary.ar : dictionary.fr;
+  const currentLang = lang || (Array.isArray(params.lang) ? params.lang[0] : params.lang) || 'fr';
+  const t = currentLang === 'ar' ? dictionary.ar : dictionary.fr;
 
   return (
     <section id="why-choose" className="py-24 bg-surface overflow-hidden">

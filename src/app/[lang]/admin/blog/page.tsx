@@ -1,13 +1,19 @@
 import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/server';
 
-export default function BlogAdminPage({ params }: { params: { lang: string } }) {
+export default async function BlogAdminPage({ params }: { params: { lang: string } }) {
   const { lang } = params;
+  const supabase = createClient();
   
-  const posts = [
-    { id: 1, title: 'Comment prendre soin de vos dents', status: 'Published', date: 'Oct 10, 2026' },
-    { id: 2, title: 'Les avantages de l\'orthodontie invisible', status: 'Draft', date: 'Oct 12, 2026' },
-  ];
+  const { data: posts = [], error } = await supabase
+    .from('blog_posts')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching blog posts:', error);
+  }
 
   return (
     <div className="space-y-6">
@@ -47,15 +53,15 @@ export default function BlogAdminPage({ params }: { params: { lang: string } }) 
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {posts.map((post) => (
+            {posts && posts.map((post) => (
               <tr key={post.id} className="hover:bg-slate-50/50 transition-colors">
-                <td className="px-6 py-4 font-bold text-slate-800">{post.title}</td>
-                <td className="px-6 py-4">{post.date}</td>
+                <td className="px-6 py-4 font-bold text-slate-800">{post.title_fr}</td>
+                <td className="px-6 py-4">{new Date(post.created_at).toLocaleDateString()}</td>
                 <td className="px-6 py-4">
                   <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                    post.status === 'Published' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+                    post.is_published ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
                   }`}>
-                    {post.status}
+                    {post.is_published ? 'Published' : 'Draft'}
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right">

@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ArrowLeft, Save, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { addDoctor } from '@/app/actions/admin';
 
 const doctorSchema = z.object({
   name_fr: z.string().min(2, 'Name is required'),
@@ -22,7 +24,9 @@ type DoctorFormValues = z.infer<typeof doctorSchema>;
 
 export default function NewDoctorPage({ params }: { params: { lang: string } }) {
   const { lang } = params;
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'fr' | 'ar'>('fr');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm<DoctorFormValues>({
     resolver: zodResolver(doctorSchema) as any,
@@ -33,9 +37,26 @@ export default function NewDoctorPage({ params }: { params: { lang: string } }) 
   });
 
   const onSubmit = async (data: DoctorFormValues) => {
-    console.log('Form data:', data);
-    // In a real app, you would send this to a Server Action to save in Supabase
-    alert('Doctor saved successfully! (Mock)');
+    setIsSubmitting(true);
+    try {
+      await addDoctor({
+        name_fr: data.name_fr,
+        name_ar: data.name_ar,
+        specialty_fr: data.specialty_fr,
+        specialty_ar: data.specialty_ar,
+        bio_fr: data.bio_fr,
+        bio_ar: data.bio_ar,
+        experience_years: data.experience_years,
+        is_active: data.is_active,
+        image_url: null,
+      });
+      router.push(`/${lang}/admin/doctors`);
+    } catch (error) {
+      console.error(error);
+      alert('Failed to save doctor');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
