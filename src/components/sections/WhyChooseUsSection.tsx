@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 import { CheckCircle } from 'lucide-react';
 
@@ -17,10 +18,13 @@ export default function WhyChooseUsSection() {
           {/* Doctor Card (Left) */}
           <div className="bg-white rounded-[2.5rem] p-8 flex flex-col md:flex-row gap-8 items-center shadow-[0_10px_40px_rgb(0,0,0,0.04)]">
             <div className="w-full md:w-64 aspect-[4/5] rounded-[2rem] overflow-hidden bg-slate-100 shrink-0 relative">
-              <img
+              <Image
                 alt={t.doctorProfile.name}
-                className="w-full h-full object-cover"
+                className="object-cover"
                 src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80"
+                fill
+                sizes="(max-width: 768px) 100vw, 256px"
+                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
             </div>

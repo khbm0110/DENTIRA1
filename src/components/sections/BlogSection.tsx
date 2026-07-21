@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 import Link from 'next/link';
 
@@ -48,10 +49,13 @@ export default function BlogSection() {
               className="bg-white p-4 rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] group transition-all duration-300"
             >
               <div className="aspect-[4/3] rounded-[1.25rem] overflow-hidden mb-6 relative">
-                <img
+                <Image
                   alt={blog.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   src={blog.img}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 400px"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="px-2">

@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 
 export default function DoctorsTeamSection() {
@@ -47,10 +48,13 @@ export default function DoctorsTeamSection() {
           {doctors.map((doctor, index) => (
             <div key={index} className="bg-surface rounded-3xl overflow-hidden group shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-300">
               <div className="aspect-[3/4] w-full overflow-hidden relative">
-                <img
+                <Image
                   src={doctor.img}
                   alt={doctor.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="p-6 text-center">

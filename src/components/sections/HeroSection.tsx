@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 import BookingModal, { BookingModalRef } from '../BookingModal';
 import { Star, ShieldCheck, Users, ArrowRight, Calendar } from 'lucide-react';
@@ -36,10 +37,14 @@ export default function Hero() {
       >
         {/* Background Image with Gradient Overlay */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80"
             alt="Clinic"
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+            referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
         </div>
@@ -94,9 +99,9 @@ export default function Hero() {
             <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-outline-variant/60 w-full">
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-3">
-                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64&q=80" alt="Patient" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" />
-                  <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64&q=80" alt="Patient" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" />
-                  <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=64&h=64&q=80" alt="Patient" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" />
+                  <Image src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64&q=80" alt="Patient" width={40} height={40} sizes="40px" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" referrerPolicy="no-referrer" />
+                  <Image src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64&q=80" alt="Patient" width={40} height={40} sizes="40px" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" referrerPolicy="no-referrer" />
+                  <Image src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=64&h=64&q=80" alt="Patient" width={40} height={40} sizes="40px" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" referrerPolicy="no-referrer" />
                   <div className="w-10 h-10 rounded-full border-2 border-white bg-surface flex items-center justify-center text-xs font-bold text-primary shadow-sm">+</div>
                 </div>
                 <div>

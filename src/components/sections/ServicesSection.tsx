@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 import { ArrowRight } from 'lucide-react';
 
@@ -48,10 +49,13 @@ export default function ServicesSection() {
           {services.map((service, index) => (
             <div key={index} className="bg-surface rounded-3xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)]">
               <div className="aspect-[4/3] w-full overflow-hidden relative">
-                <img
+                <Image
                   src={service.img}
                   alt={service.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  referrerPolicy="no-referrer"
                 />
               </div>
               <div className="p-8">

@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 
 // Dummy data simulating Google Maps reviews
@@ -70,7 +71,7 @@ export default function TestimonialsSection() {
                 "{review.text}"
               </p>
               <div className="flex items-center gap-4">
-                <img src={review.profile_photo_url} alt={review.author_name} className="w-12 h-12 rounded-full object-cover" />
+                <Image src={review.profile_photo_url} alt={review.author_name} width={48} height={48} className="w-12 h-12 rounded-full object-cover" referrerPolicy="no-referrer" />
                 <div>
                   <h3 className="font-bold text-on-surface text-sm">{review.author_name}</h3>
                   <p className="text-xs text-on-surface-variant">{review.relative_time_description}</p>

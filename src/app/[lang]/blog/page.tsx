@@ -1,5 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 import NavigationBar from '@/components/common/NavigationBar';
 
@@ -67,10 +68,13 @@ export default function BlogPage() {
             {allArticles.map((article) => (
               <article key={article.id} className="bg-white p-4 rounded-4xl clinical-shadow group">
                 <div className="aspect-[1.1] rounded-3xl overflow-hidden mb-6 relative">
-                  <img
+                  <Image
                     alt={t.blog[article.key as keyof typeof t.blog]}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     src={article.image}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <div className="px-2">
