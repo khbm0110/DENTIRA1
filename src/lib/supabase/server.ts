@@ -69,18 +69,32 @@ export function createMiddlewareClient(request: NextRequest, response: NextRespo
 export async function isAdminRequest(request: NextRequest, response: NextResponse): Promise<boolean> {
   try {
     const supabase = createMiddlewareClient(request, response)
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return false
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
 
-    const { data: profile, error } = await supabase
+    if (userError || !user) {
+      console.log('isAdminRequest: No user session found', userError?.message)
+      return false
+    }
+
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .single()
 
-    if (error || !profile) return false
+    if (profileError) {
+      console.error('isAdminRequest: Profile fetch error:', profileError.message)
+      return false
+    }
+
+    if (!profile) {
+      console.log('isAdminRequest: No profile row found for user', user.id)
+      return false
+    }
+
     return profile.role === 'admin'
-  } catch {
+  } catch (err) {
+    console.error('isAdminRequest: Unexpected error', err)
     return false
   }
 }
