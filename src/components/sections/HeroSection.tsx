@@ -9,8 +9,9 @@ import BookingModal, { BookingModalRef } from '../BookingModal';
 import { Star, ShieldCheck, Users, ArrowRight, Calendar } from 'lucide-react';
 
 import WorkingHoursBar from './WorkingHoursBar';
+import type { ContactInfo, WorkingHours } from '@/lib/supabase/public-settings';
 
-export default function Hero({ lang }: { lang?: string }) {
+export default function Hero({ lang, contact, hours }: { lang?: string; contact?: ContactInfo; hours?: WorkingHours }) {
   const targetRef = useRef<HTMLDivElement>(null);
   const bookingModalRef = useRef<BookingModalRef>(null);
   const { scrollYProgress } = useScroll({
@@ -124,10 +125,10 @@ export default function Hero({ lang }: { lang?: string }) {
           </motion.div>
         </div>
 
-        <WorkingHoursBar />
+        <WorkingHoursBar hours={hours} />
 
       </section>
-      <BookingModal ref={bookingModalRef} />
+      <BookingModal ref={bookingModalRef} contact={contact} />
     </>
   );
 }

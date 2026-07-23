@@ -8,6 +8,8 @@ import { ArrowLeft, Save, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { addService } from '@/app/actions/admin';
+import { ADMIN_SECRET_PATH } from '@/config/admin-path';
+import ImageUploader from '@/components/admin/ImageUploader';
 
 const serviceSchema = z.object({
   name_fr: z.string().min(2, 'Name is required'),
@@ -25,6 +27,7 @@ export default function NewServicePage({ params }: { params: { lang: string } })
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'fr' | 'ar'>('fr');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm<ServiceFormValues>({
     resolver: zodResolver(serviceSchema) as any,
@@ -43,9 +46,9 @@ export default function NewServicePage({ params }: { params: { lang: string } })
         description_ar: data.description_ar,
         icon_name: data.icon_name || null,
         is_active: data.is_active,
-        image_url: null, // Placeholder for image upload
+        image_url: imageUrl,
       });
-      router.push(`/${lang}/admin/services`);
+      router.push(`/${lang}/${ADMIN_SECRET_PATH}/services`);
     } catch (error) {
       console.error(error);
       alert('Failed to save service');
@@ -57,7 +60,7 @@ export default function NewServicePage({ params }: { params: { lang: string } })
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center gap-4">
-        <Link href={`/${lang}/admin/services`} className="p-2 bg-white rounded-lg border border-slate-200 text-slate-500 hover:text-slate-800 transition-colors">
+        <Link href={`/${lang}/${ADMIN_SECRET_PATH}/services`} className="p-2 bg-white rounded-lg border border-slate-200 text-slate-500 hover:text-slate-800 transition-colors">
           <ArrowLeft size={20} />
         </Link>
         <div>
@@ -118,13 +121,7 @@ export default function NewServicePage({ params }: { params: { lang: string } })
               </div>
 
               <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Featured Image</label>
-                  <div className="w-full h-48 border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center text-slate-400 bg-slate-50 cursor-pointer hover:bg-slate-100 transition-colors">
-                    <ImageIcon size={32} className="mb-2" />
-                    <span className="text-sm font-medium">Click to upload photo</span>
-                  </div>
-                </div>
+                <ImageUploader folder="services" value={imageUrl} onChange={setImageUrl} label="Featured Image" />
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -152,7 +149,7 @@ export default function NewServicePage({ params }: { params: { lang: string } })
           </div>
           
           <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
-            <Link href={`/${lang}/admin/services`} className="px-6 py-2.5 rounded-lg font-bold text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 transition-colors">
+            <Link href={`/${lang}/${ADMIN_SECRET_PATH}/services`} className="px-6 py-2.5 rounded-lg font-bold text-slate-600 bg-white border border-slate-200 hover:bg-slate-50 transition-colors">
               Cancel
             </Link>
             <button type="submit" className="px-6 py-2.5 rounded-lg font-bold text-white bg-primary hover:bg-primary/90 transition-colors flex items-center gap-2">

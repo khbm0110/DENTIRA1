@@ -1,7 +1,12 @@
-// DENTORA-OS - SUPABASE CLIENT
-// This file initializes the Supabase client for database and authentication operations.
+// DENTORA-OS - SUPABASE CLIENT (BROWSER)
+// Uses @supabase/ssr so the auth session lives in cookies, not just localStorage.
+// This is required so that Server Actions (src/app/actions/admin.ts) and the
+// middleware can see the logged-in session - previously this used plain
+// @supabase/supabase-js (localStorage-only session), which meant every
+// Server Action ran as an anonymous user and silently failed RLS checks,
+// which is why nothing in the admin dashboard could ever be saved.
 
-import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 
 // Environment variables for Supabase connection
 // These should be set in .env.local
@@ -9,7 +14,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supaba
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'mock-key';
 
 // Create Supabase client with anonymous key for client-side operations
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
 
 // Database types for TypeScript support
 export interface Appointment {

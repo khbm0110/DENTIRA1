@@ -1,4 +1,10 @@
 
+// NOTE: This file is no longer the source of truth for contact info, working
+// hours, or business identity - those are now stored in Supabase
+// (clinic_settings / social_media tables) and managed from the admin
+// Settings page, see src/lib/supabase/public-settings.ts. This file is kept
+// for reference / non-dynamic config (theme colors, supported locales) but
+// its `connectivity` values below are placeholders and NOT used anywhere.
 // DENTORA-OS - SYSTEM CORE CONFIGURATION
 // This file acts as the single source of truth for the application's core data.
 // All data is derived from the initial System-Core-Config.txt skill file.

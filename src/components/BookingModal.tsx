@@ -5,11 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useParams } from 'next/navigation';
 import dictionary from '../lib/i18n/dictionary';
 
+import type { ContactInfo } from '../lib/supabase/public-settings';
+
 export interface BookingModalRef {
   openModal: () => void;
 }
 
-const BookingModal = forwardRef<BookingModalRef, {}>((props, ref) => {
+const BookingModal = forwardRef<BookingModalRef, { contact?: ContactInfo }>(({ contact }, ref) => {
   const [isOpen, setIsOpen] = useState(false);
   const params = useParams();
   const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
@@ -31,7 +33,8 @@ const BookingModal = forwardRef<BookingModalRef, {}>((props, ref) => {
   const handleWhatsAppBooking = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const message = `Bonjour, je voudrais prendre un rendez-vous.\nNom: ${formData.firstName} ${formData.lastName}\nHeure souhaitée: ${formData.time}`;
-    const whatsappURL = `https://wa.me/${t.common.phone_number}?text=${encodeURIComponent(message)}`;
+    const whatsappNumber = (contact?.whatsapp || t.common.phone_number).replace(/\D/g, '');
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappURL, '_blank');
     closeModal(); // Close modal after booking
   };

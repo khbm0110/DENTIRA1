@@ -1,6 +1,9 @@
-import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
+import { ADMIN_SECRET_PATH } from '@/config/admin-path';
+import { deleteService } from '@/app/actions/admin';
+import RowActions from '@/components/admin/RowActions';
 
 export default async function ServicesAdminPage({ params }: { params: { lang: string } }) {
   const { lang } = params;
@@ -23,7 +26,7 @@ export default async function ServicesAdminPage({ params }: { params: { lang: st
           <p className="text-slate-500 text-sm mt-1">Manage the services offered by the clinic.</p>
         </div>
         <Link 
-          href={`/${lang}/admin/services/new`}
+          href={`/${lang}/${ADMIN_SECRET_PATH}/services/new`}
           className="bg-primary text-white px-4 py-2.5 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-primary/90 transition-colors"
         >
           <Plus size={18} />
@@ -63,14 +66,11 @@ export default async function ServicesAdminPage({ params }: { params: { lang: st
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <div className="flex items-center justify-end gap-2">
-                    <button className="p-2 text-slate-400 hover:text-primary transition-colors rounded-lg hover:bg-primary/10">
-                      <Edit2 size={16} />
-                    </button>
-                    <button className="p-2 text-slate-400 hover:text-red-600 transition-colors rounded-lg hover:bg-red-50">
-                      <Trash2 size={16} />
-                    </button>
-                  </div>
+                  <RowActions
+                    editHref={`/${lang}/${ADMIN_SECRET_PATH}/services/${service.id}/edit`}
+                    onDelete={deleteService.bind(null, service.id)}
+                    confirmMessage={`Delete "${service.name_fr}"?`}
+                  />
                 </td>
               </tr>
             ))}

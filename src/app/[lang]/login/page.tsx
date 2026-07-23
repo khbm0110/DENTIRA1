@@ -4,20 +4,23 @@
 // Supabase Authentication integration for admin access
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { signInWithEmailPassword } from '../../../lib/supabase/auth';
 import dictionary from '../../../lib/i18n/dictionary';
+import { ADMIN_SECRET_PATH } from '../../../config/admin-path';
 import { Mail, Lock, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
-  const lang = 'fr'; // Default language
-  const dict = dictionary[lang];
+  const params = useParams();
+  const lang = (Array.isArray(params.lang) ? params.lang[0] : params.lang) || 'fr';
+  const dict = dictionary[lang as 'fr' | 'ar'];
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +31,7 @@ export default function LoginPage() {
       const result = await signInWithEmailPassword(email, password);
       
       if (result.success) {
-        router.push(`/${lang}/admin`);
+        router.push(`/${lang}/${ADMIN_SECRET_PATH}`);
       } else {
         setError(dict.admin.login_error);
       }

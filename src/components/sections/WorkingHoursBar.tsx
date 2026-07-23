@@ -2,21 +2,32 @@
 
 import { useParams } from 'next/navigation';
 import dictionary from '@/lib/i18n/dictionary';
+import type { WorkingHours } from '@/lib/supabase/public-settings';
 
-export default function WorkingHoursBar() {
+const DAY_KEYS: (keyof WorkingHours)[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+export default function WorkingHoursBar({ hours }: { hours?: WorkingHours }) {
   const params = useParams();
   const lang = Array.isArray(params.lang) ? params.lang[0] : params.lang;
   const t = lang === 'ar' ? dictionary.ar : dictionary.fr;
 
-  const workingHours = [
-    { day: t.contact.monday, time: '09:00 - 18:00' },
-    { day: t.contact.tuesday, time: '09:00 - 18:00' },
-    { day: t.contact.wednesday, time: '09:00 - 18:00' },
-    { day: t.contact.thursday, time: '09:00 - 18:00' },
-    { day: t.contact.friday, time: '09:00 - 18:00' },
-    { day: t.contact.saturday, time: '10:00 - 14:00' },
-    { day: t.contact.sunday, time: t.contact.closed },
-  ];
+  const dayLabels: Record<string, string> = {
+    monday: t.contact.monday,
+    tuesday: t.contact.tuesday,
+    wednesday: t.contact.wednesday,
+    thursday: t.contact.thursday,
+    friday: t.contact.friday,
+    saturday: t.contact.saturday,
+    sunday: t.contact.sunday,
+  };
+
+  const workingHours = DAY_KEYS.map((day) => {
+    const dayHours = hours?.[day];
+    return {
+      day: dayLabels[day],
+      time: dayHours && !dayHours.enabled ? t.contact.closed : dayHours ? `${dayHours.open} - ${dayHours.close}` : '09:00 - 18:00',
+    };
+  });
 
   return (
     <div className="absolute bottom-0 left-0 right-0 w-full bg-white border-t border-gray-100 z-20">

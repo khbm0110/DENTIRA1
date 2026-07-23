@@ -9,7 +9,9 @@ import BookingModal, { BookingModalRef } from '../BookingModal';
 import { Menu, X, Phone, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
-export default function NavigationBar() {
+import type { ContactInfo } from '@/lib/supabase/public-settings';
+
+export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const bookingModalRef = useRef<BookingModalRef>(null);
@@ -62,8 +64,9 @@ export default function NavigationBar() {
     }
   };
 
-  const whatsappNumber = t.common.phone_number.replace(/\D/g, '');
-  const phoneNumber = t.common.phone_number.replace(/\D/g, '');
+  const whatsappNumber = (contact?.whatsapp || t.common.phone_number).replace(/\D/g, '');
+  const phoneNumber = (contact?.phone || t.common.phone_number).replace(/\D/g, '');
+  const displayPhoneNumber = contact?.phone || t.common.phone_number;
 
   const navLinks = [
     { label: t.nav.home, href: `/${lang}` },
@@ -114,7 +117,7 @@ export default function NavigationBar() {
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
               <Phone size={16} className="text-primary" />
             </div>
-            <span className="hidden lg:inline">{t.common.phone_number}</span>
+            <span className="hidden lg:inline">{displayPhoneNumber}</span>
           </a>
           
           <div className="mx-1">
@@ -202,7 +205,7 @@ export default function NavigationBar() {
                     className="flex items-center gap-3 p-4 bg-surface rounded-2xl hover:bg-primary/10 transition-colors"
                   >
                     <Phone className="text-primary" size={20} />
-                    <span className="font-medium">{t.common.phone_number}</span>
+                    <span className="font-medium">{displayPhoneNumber}</span>
                   </a>
                   <a
                     href={`https://wa.me/${whatsappNumber}`}
@@ -219,7 +222,7 @@ export default function NavigationBar() {
           </>
         )}
       </AnimatePresence>
-      <BookingModal ref={bookingModalRef} />
+      <BookingModal ref={bookingModalRef} contact={contact} />
     </>
   );
 }

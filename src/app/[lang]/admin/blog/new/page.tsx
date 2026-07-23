@@ -8,6 +8,8 @@ import { ArrowLeft, Save, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { addBlogPost } from '@/app/actions/admin';
+import { ADMIN_SECRET_PATH } from '@/config/admin-path';
+import ImageUploader from '@/components/admin/ImageUploader';
 
 const postSchema = z.object({
   title_fr: z.string().min(2, 'Title is required'),
@@ -25,6 +27,7 @@ export default function NewPostPage({ params }: { params: { lang: string } }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'fr' | 'ar'>('fr');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm<PostFormValues>({
     resolver: zodResolver(postSchema) as any,
@@ -43,9 +46,9 @@ export default function NewPostPage({ params }: { params: { lang: string } }) {
         content_ar: data.content_ar,
         slug: data.slug,
         is_published: data.status === 'published',
-        image_url: null,
+        image_url: imageUrl,
       });
-      router.push(`/${lang}/admin/blog`);
+      router.push(`/${lang}/${ADMIN_SECRET_PATH}/blog`);
     } catch (error) {
       console.error(error);
       alert('Failed to save post');
@@ -57,7 +60,7 @@ export default function NewPostPage({ params }: { params: { lang: string } }) {
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       <div className="flex items-center gap-4">
-        <Link href={`/${lang}/admin/blog`} className="p-2 bg-white rounded-lg border border-slate-200 text-slate-500 hover:text-slate-800 transition-colors">
+        <Link href={`/${lang}/${ADMIN_SECRET_PATH}/blog`} className="p-2 bg-white rounded-lg border border-slate-200 text-slate-500 hover:text-slate-800 transition-colors">
           <ArrowLeft size={20} />
         </Link>
         <div>

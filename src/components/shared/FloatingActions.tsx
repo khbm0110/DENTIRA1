@@ -5,11 +5,11 @@
 
 import { motion, Variants } from 'framer-motion';
 import { Phone, MessageCircle } from 'lucide-react';
-import { DENTORA_CORE } from '../../config/dentora-system';
+import type { ContactInfo } from '@/lib/supabase/public-settings';
 
-export default function FloatingActions() {
-  const whatsappNumber = DENTORA_CORE.connectivity.whatsapp.replace(/\D/g, '');
-  const phoneNumber = DENTORA_CORE.connectivity.phone.replace(/\D/g, '');
+export default function FloatingActions({ contact }: { contact?: ContactInfo }) {
+  const whatsappNumber = (contact?.whatsapp || '+212612345678').replace(/\D/g, '');
+  const phoneNumber = (contact?.phone || '+212612345678').replace(/\D/g, '');
 
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
   const phoneUrl = `tel:+${phoneNumber}`;

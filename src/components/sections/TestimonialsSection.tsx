@@ -1,34 +1,6 @@
-'use client';
-
-import { useParams } from 'next/navigation';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
-
-// Dummy data simulating Google Maps reviews
-const reviews = [
-  {
-    author_name: "Amina El Fassi",
-    profile_photo_url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80",
-    rating: 5,
-    relative_time_description: "il y a 2 semaines",
-    text: "Service exceptionnel et personnel très attentionné. Le Dr. Alami est d'un professionnalisme rare. Je recommande vivement!",
-  },
-  {
-    author_name: "Youssef Benjelloun",
-    profile_photo_url: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80",
-    rating: 5,
-    relative_time_description: "il y a un mois",
-    text: "Très satisfait de mon traitement d'orthodontie. L'équipe est formidable et les résultats sont au-delà de mes attentes.",
-  },
-  {
-    author_name: "Fatima Zahra",
-    profile_photo_url: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80",
-    rating: 5,
-    relative_time_description: "il y a 3 mois",
-    text: "Bonne expérience globale. Le cabinet est très moderne et propre. L'équipe est à l'écoute et très douce.",
-  }
-];
+import { createClient } from '@/lib/supabase/server';
 
 const StarRating = ({ rating }: { rating: number }) => {
   return (
@@ -42,10 +14,49 @@ const StarRating = ({ rating }: { rating: number }) => {
   );
 };
 
-export default function TestimonialsSection({ lang }: { lang?: string }) {
-  const params = useParams();
-  const currentLang = lang || (Array.isArray(params.lang) ? params.lang[0] : params.lang) || 'fr';
+// Shown only if there are no published testimonials yet, so the section
+// never looks empty on a brand new site.
+const fallbackReviews = [
+  {
+    name: "Amina El Fassi",
+    photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80",
+    rating: 5,
+    text: "Service exceptionnel et personnel très attentionné. Je recommande vivement !",
+  },
+  {
+    name: "Youssef Benjelloun",
+    photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80",
+    rating: 5,
+    text: "Très satisfait de mon traitement. L'équipe est formidable et les résultats sont au-delà de mes attentes.",
+  },
+  {
+    name: "Fatima Zahra",
+    photo: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80",
+    rating: 5,
+    text: "Bonne expérience globale. Le cabinet est très moderne et propre. L'équipe est à l'écoute.",
+  },
+];
+
+export default async function TestimonialsSection({ lang }: { lang?: string }) {
+  const currentLang = lang || 'fr';
   const t = currentLang === 'ar' ? dictionary.ar : dictionary.fr;
+
+  const supabase = createClient();
+  const { data: testimonials } = await supabase
+    .from('testimonials')
+    .select('*')
+    .eq('is_published', true)
+    .order('created_at', { ascending: false })
+    .limit(6);
+
+  const reviews = testimonials && testimonials.length > 0
+    ? testimonials.map((rev: any) => ({
+        name: currentLang === 'ar' ? rev.name_ar : rev.name_fr,
+        photo: rev.photo_url || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80',
+        rating: rev.rating || 5,
+        text: currentLang === 'ar' ? rev.review_ar : rev.review_fr,
+      }))
+    : fallbackReviews;
 
   return (
     <section id="testimonials" className="py-24 bg-surface">
@@ -58,34 +69,22 @@ export default function TestimonialsSection({ lang }: { lang?: string }) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {reviews.map((review, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
               className="bg-white rounded-3xl p-8 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] transition-all duration-300"
             >
               <StarRating rating={review.rating} />
               <p className="text-on-surface-variant text-base leading-relaxed mb-8">
-                "{review.text}"
+                &quot;{review.text}&quot;
               </p>
               <div className="flex items-center gap-4">
-                <Image src={review.profile_photo_url} alt={review.author_name} width={48} height={48} className="w-12 h-12 rounded-full object-cover" referrerPolicy="no-referrer" />
+                <Image src={review.photo} alt={review.name} width={48} height={48} className="w-12 h-12 rounded-full object-cover" referrerPolicy="no-referrer" />
                 <div>
-                  <h3 className="font-bold text-on-surface text-sm">{review.author_name}</h3>
-                  <p className="text-xs text-on-surface-variant">{review.relative_time_description}</p>
+                  <h3 className="font-bold text-on-surface text-sm">{review.name}</h3>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </div>
-
-        {/* Pagination Indicators */}
-        <div className="flex justify-center gap-2 mt-12">
-          <div className="w-8 h-2.5 rounded-full bg-primary"></div>
-          <div className="w-2.5 h-2.5 rounded-full bg-outline-variant hover:bg-primary/50 transition-colors cursor-pointer"></div>
-          <div className="w-2.5 h-2.5 rounded-full bg-outline-variant hover:bg-primary/50 transition-colors cursor-pointer"></div>
         </div>
       </div>
     </section>

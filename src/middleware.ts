@@ -1,100 +1,133 @@
 // DENTORA-OS - MIDDLEWARE
-// Handles i18n routing, language detection, and admin route protection
+// Handles i18n routing, language detection, and REAL admin route protection.
+//
+// Security model:
+//  1. The real dashboard lives at /[lang]/admin, but that literal URL is
+//     never served - direct requests to it are bounced to the homepage.
+//  2. The dashboard is only reachable through a secret path segment
+//     (see src/config/admin-path.ts). Requests to it are internally
+//     rewritten to the real /admin route.
+//  3. Every request under the secret path (other than the login page) is
+//     verified SERVER-SIDE: valid Supabase session + role = 'admin' in
+//     public.profiles. This cannot be bypassed by disabling client JS,
+//     unlike the previous version which had NO server-side check at all
+//     and left the whole dashboard publicly accessible to anyone who
+//     guessed or was linked to /fr/admin.
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { isAdminRequest } from './lib/supabase/server';
+import { ADMIN_SECRET_PATH } from './config/admin-path';
 
-// Supported locales
 const locales = ['fr', 'ar'];
 const defaultLocale = 'fr';
 
-// Protected routes that require authentication
-const protectedRoutes = ['/admin'];
+const REAL_ADMIN_SEGMENT = 'admin';
+const REAL_LOGIN_SEGMENT = 'login';
 
-// Public only routes (redirect if already logged in)
-const publicOnlyRoutes = ['/login'];
-
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
-  // Check if pathname starts with a supported locale
+
   const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+    (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
   );
 
-  // Redirect to default locale if no locale in path
+  // Normalize to a locale-prefixed URL FIRST. Doing the admin/security checks
+  // only applies below this point fixes a bug where the old middleware's
+  // "protectedRoutes" check never matched real, locale-prefixed paths like
+  // "/fr/admin" (it only ever matched a literal "/admin" prefix), which meant
+  // the dashboard was never actually protected by the middleware at all.
   if (!pathnameHasLocale) {
     const locale = detectLocale(request);
-    
-    // Special handling for protected routes
-    if (protectedRoutes.some((route) => pathname.startsWith(route))) {
-      // Redirect to login with locale
-      return NextResponse.redirect(
-        new URL(`/${locale}/login`, request.url)
-      );
-    }
-    
-    // Redirect to the same path with locale
-    return NextResponse.redirect(
-      new URL(`/${locale}${pathname === '/' ? '' : pathname}`, request.url)
-    );
+    const target = new URL(`/${locale}${pathname === '/' ? '' : pathname}`, request.url);
+    target.search = request.nextUrl.search;
+    return NextResponse.redirect(target);
   }
 
-  // Handle protected routes
-  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
-    // For admin routes, we need to check authentication
-    // This is a basic check - in production, you would verify the session
-    const authCookie = request.cookies.get('supabase-auth-token');
-    
-    if (!authCookie && !pathname.includes('/login')) {
-      const currentLocale = pathname.split('/')[1];
-      return NextResponse.redirect(
-        new URL(`/${currentLocale}/login`, request.url)
-      );
-    }
+  const segments = pathname.split('/').filter(Boolean); // e.g. ['fr','admin','services']
+  const locale = segments[0];
+  const secondSegment = segments[1] || '';
+  const restPath = segments.slice(2).join('/');
+
+  // 1) Block direct access to the real, non-secret admin/login segment names.
+  if (secondSegment === REAL_ADMIN_SEGMENT || secondSegment === REAL_LOGIN_SEGMENT) {
+    return NextResponse.redirect(new URL(`/${locale}`, request.url));
   }
 
-  // Set headers for i18n
+  // 2) Requests to the secret admin path.
+  if (secondSegment === ADMIN_SECRET_PATH) {
+    const isLoginRequest = restPath === REAL_LOGIN_SEGMENT;
+
+    if (isLoginRequest) {
+      const rewritten = request.nextUrl.clone();
+      rewritten.pathname = `/${locale}/${REAL_LOGIN_SEGMENT}`;
+      const loginResponse = NextResponse.rewrite(rewritten);
+      applySecurityHeaders(loginResponse);
+      loginResponse.headers.set('X-Robots-Tag', 'noindex, nofollow');
+      return loginResponse;
+    }
+
+    const response = NextResponse.next();
+    const admin = await isAdminRequest(request, response);
+
+    if (!admin) {
+      const loginUrl = new URL(`/${locale}/${ADMIN_SECRET_PATH}/${REAL_LOGIN_SEGMENT}`, request.url);
+      const redirectResponse = NextResponse.redirect(loginUrl);
+      applySecurityHeaders(redirectResponse);
+      return redirectResponse;
+    }
+
+    const rewritten = request.nextUrl.clone();
+    rewritten.pathname = `/${locale}/${REAL_ADMIN_SEGMENT}${restPath ? `/${restPath}` : ''}`;
+    const rewriteResponse = NextResponse.rewrite(rewritten, { headers: response.headers });
+    applySecurityHeaders(rewriteResponse);
+    rewriteResponse.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    return rewriteResponse;
+  }
+
+  // Normal public page.
   const response = NextResponse.next();
-  
-  // Add security headers
+  applySecurityHeaders(response);
+  return response;
+}
+
+function applySecurityHeaders(response: NextResponse) {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-XSS-Protection', '1; mode=block');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   return response;
 }
 
-// Detect user preferred locale
 function detectLocale(request: NextRequest): string {
-  // Check if locale is set in cookie
   const localeCookie = request.cookies.get('NEXT_LOCALE')?.value;
   if (localeCookie && locales.includes(localeCookie)) {
     return localeCookie;
   }
 
-  // Check Accept-Language header
   const acceptLanguage = request.headers.get('Accept-Language');
   if (acceptLanguage) {
     const preferredLocale = acceptLanguage
       .split(',')
       .map((lang) => lang.split(';')[0].trim().substring(0, 2))
       .find((lang) => locales.includes(lang));
-    
+
     if (preferredLocale) {
       return preferredLocale;
     }
   }
 
-  // Default to system locale or default locale
+  const systemLocale = request.headers.get('x-vercel-ip-country') || '';
+  if (systemLocale === 'MA') {
+    return 'ar';
+  }
+
   return defaultLocale;
 }
 
-// Configure which paths the middleware should run on
 export const config = {
   matcher: [
-    // Match all paths except static files and API routes
     '/((?!_next/static|_next/image|favicon.ico|icons|images|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
