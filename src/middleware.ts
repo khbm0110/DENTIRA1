@@ -28,6 +28,19 @@ const REAL_LOGIN_SEGMENT = 'login';
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // 0) Bypass root static files, service workers, and manifests to prevent 307/308 redirects.
+  // Fixes: "SecurityError: Failed to register a ServiceWorker... The script resource is behind a redirect"
+  if (
+    pathname === '/sw.js' ||
+    pathname.startsWith('/workbox-') ||
+    pathname === '/manifest.json' ||
+    pathname === '/favicon.ico' ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml'
+  ) {
+    return NextResponse.next();
+  }
+
   const pathnameHasLocale = locales.some(
     (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
   );
@@ -128,6 +141,6 @@ function detectLocale(request: NextRequest): string {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|icons|images|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon\\.ico|sw\\.js|workbox-.*\\.js|manifest\\.json|icons|images|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
