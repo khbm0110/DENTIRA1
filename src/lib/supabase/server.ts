@@ -1,7 +1,13 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import type { NextRequest, NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 
+// Server Components / Server Actions client.
+// Uses the modern getAll/setAll cookie API (not the deprecated get/set/remove
+// shape) - Supabase's own docs warn that the deprecated shape "can lead to
+// issues such as random logouts, early session termination or increased
+// token refresh requests", which is exactly what caused admin logins to not
+// stick after being redirected to the dashboard.
 export function createClient() {
   const cookieStore = cookies()
 
@@ -10,25 +16,18 @@ export function createClient() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return cookieStore.get(name)?.value
+        getAll() {
+          return cookieStore.getAll()
         },
-        set(name: string, value: string, options: CookieOptions) {
+        setAll(cookiesToSet) {
           try {
-            cookieStore.set({ name, value, ...options })
-          } catch (error) {
-            // The `set` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
-          }
-        },
-        remove(name: string, options: CookieOptions) {
-          try {
-            cookieStore.set({ name, value: '', ...options })
-          } catch (error) {
-            // The `delete` method was called from a Server Component.
-            // This can be ignored if you have middleware refreshing
-            // user sessions.
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options)
+            })
+          } catch {
+            // Called from a Server Component that can't set cookies - fine,
+            // as long as the middleware below refreshes the session on every
+            // request.
           }
         },
       },
@@ -37,64 +36,63 @@ export function createClient() {
 }
 
 /**
- * Cookie-aware client for use inside middleware (request/response, not
- * next/headers). Used to verify the admin session before the admin page is
- * ever rendered.
+ * Cookie-aware client + response pair for use inside middleware.
+ * Returns the (possibly updated) response alongside the client, because
+ * refreshing/writing auth cookies in middleware requires rebuilding the
+ * NextResponse with those cookies attached - this is the pattern Supabase's
+ * own Next.js docs use.
  */
-export function createMiddlewareClient(request: NextRequest, response: NextResponse) {
-  return createServerClient(
+export function createMiddlewareClient(request: NextRequest) {
+  let response = NextResponse.next({ request })
+
+  const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
+        getAll() {
+          return request.cookies.getAll()
         },
-        set(name: string, value: string, options: CookieOptions) {
-          response.cookies.set({ name, value, ...options })
-        },
-        remove(name: string, options: CookieOptions) {
-          response.cookies.set({ name, value: '', ...options })
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+          response = NextResponse.next({ request })
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options)
+          })
         },
       },
     }
   )
+
+  return { supabase, response }
 }
 
 /**
- * True only if the request has a valid Supabase session AND that user has
- * role = 'admin' in public.profiles. Fails closed (returns false) on any
- * error, so access is DENIED by default rather than silently allowed.
+ * Verifies whether the current request belongs to a logged-in user with
+ * role = 'admin' in public.profiles. Fails closed (returns isAdmin: false)
+ * on any error, so access is DENIED by default rather than silently allowed.
+ *
+ * Returns the response object produced while checking the session - the
+ * caller (middleware) MUST continue building on top of this response (not a
+ * fresh NextResponse.next()) so any refreshed auth cookies actually reach
+ * the browser.
  */
-export async function isAdminRequest(request: NextRequest, response: NextResponse): Promise<boolean> {
+export async function checkAdminRequest(request: NextRequest): Promise<{ isAdmin: boolean; response: NextResponse }> {
+  const { supabase, response } = createMiddlewareClient(request)
+
   try {
-    const supabase = createMiddlewareClient(request, response)
-    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { isAdmin: false, response }
 
-    if (userError || !user) {
-      console.log('isAdminRequest: No user session found', userError?.message)
-      return false
-    }
-
-    const { data: profile, error: profileError } = await supabase
+    const { data: profile, error } = await supabase
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .single()
 
-    if (profileError) {
-      console.error('isAdminRequest: Profile fetch error:', profileError.message)
-      return false
-    }
-
-    if (!profile) {
-      console.log('isAdminRequest: No profile row found for user', user.id)
-      return false
-    }
-
-    return profile.role === 'admin'
-  } catch (err) {
-    console.error('isAdminRequest: Unexpected error', err)
-    return false
+    if (error || !profile) return { isAdmin: false, response }
+    return { isAdmin: profile.role === 'admin', response }
+  } catch {
+    return { isAdmin: false, response }
   }
 }

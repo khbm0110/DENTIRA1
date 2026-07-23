@@ -3,19 +3,22 @@ import ToastContainer from '../../components/shared/Toast';
 import { createClient } from '../../lib/supabase/server';
 import { getPublicClinicSettings } from '../../lib/supabase/public-settings';
 import './globals.css';
-import { Manrope, Inter } from 'next/font/google';
 
-const manrope = Manrope({
-  subsets: ['latin'],
-  variable: '--font-headline',
-  display: 'swap',
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-body',
-  display: 'swap',
-});
+// Self-hosted fonts (no external network fetch at build or run time, unlike
+// next/font/google which needs to reach fonts.googleapis.com during every
+// build - this also avoids the GDPR exposure that comes with loading Google
+// Fonts directly, since no visitor data is ever sent to Google's servers).
+import '@fontsource/manrope/400.css';
+import '@fontsource/manrope/500.css';
+import '@fontsource/manrope/600.css';
+import '@fontsource/manrope/700.css';
+import '@fontsource/manrope/800.css';
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import 'material-symbols/outlined.css';
 
 const SITE_URL = 'https://dentora.ma';
 
@@ -155,11 +158,12 @@ export default async function RootLayout({ children, params }: { children: React
   });
 
   return (
-    <html lang={params.lang} dir={isRTL ? 'rtl' : 'ltr'} className={`${manrope.variable} ${inter.variable}`}>
+    <html
+      lang={params.lang}
+      dir={isRTL ? 'rtl' : 'ltr'}
+      style={{ '--font-headline': "'Manrope', sans-serif", '--font-body': "'Inter', sans-serif" } as React.CSSProperties}
+    >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
         <meta name="theme-color" content="#36C2CF" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />

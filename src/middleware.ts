@@ -16,7 +16,7 @@
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { isAdminRequest } from './lib/supabase/server';
+import { checkAdminRequest } from './lib/supabase/server';
 import { ADMIN_SECRET_PATH } from './config/admin-path';
 
 const locales = ['fr', 'ar'];
@@ -27,19 +27,6 @@ const REAL_LOGIN_SEGMENT = 'login';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
-  // 0) Bypass root static files, service workers, and manifests to prevent 307/308 redirects.
-  // Fixes: "SecurityError: Failed to register a ServiceWorker... The script resource is behind a redirect"
-  if (
-    pathname === '/sw.js' ||
-    pathname.startsWith('/workbox-') ||
-    pathname === '/manifest.json' ||
-    pathname === '/favicon.ico' ||
-    pathname === '/robots.txt' ||
-    pathname === '/sitemap.xml'
-  ) {
-    return NextResponse.next();
-  }
 
   const pathnameHasLocale = locales.some(
     (locale) => pathname === `/${locale}` || pathname.startsWith(`/${locale}/`)
@@ -80,12 +67,12 @@ export async function middleware(request: NextRequest) {
       return loginResponse;
     }
 
-    const response = NextResponse.next();
-    const admin = await isAdminRequest(request, response);
+    const { isAdmin, response } = await checkAdminRequest(request);
 
-    if (!admin) {
+    if (!isAdmin) {
       const loginUrl = new URL(`/${locale}/${ADMIN_SECRET_PATH}/${REAL_LOGIN_SEGMENT}`, request.url);
       const redirectResponse = NextResponse.redirect(loginUrl);
+      copyCookies(response, redirectResponse);
       applySecurityHeaders(redirectResponse);
       return redirectResponse;
     }
@@ -93,6 +80,7 @@ export async function middleware(request: NextRequest) {
     const rewritten = request.nextUrl.clone();
     rewritten.pathname = `/${locale}/${REAL_ADMIN_SEGMENT}${restPath ? `/${restPath}` : ''}`;
     const rewriteResponse = NextResponse.rewrite(rewritten, { headers: response.headers });
+    copyCookies(response, rewriteResponse);
     applySecurityHeaders(rewriteResponse);
     rewriteResponse.headers.set('X-Robots-Tag', 'noindex, nofollow');
     return rewriteResponse;
@@ -102,6 +90,12 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
   applySecurityHeaders(response);
   return response;
+}
+
+function copyCookies(from: NextResponse, to: NextResponse) {
+  from.cookies.getAll().forEach((cookie) => {
+    to.cookies.set(cookie);
+  });
 }
 
 function applySecurityHeaders(response: NextResponse) {
@@ -141,6 +135,6 @@ function detectLocale(request: NextRequest): string {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon\\.ico|sw\\.js|workbox-.*\\.js|manifest\\.json|icons|images|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|icons|images|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
