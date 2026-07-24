@@ -1,5 +1,15 @@
 const dictionary = {
     fr: {
+        featureBar: {
+            item1_title: "Rendez-vous rapide",
+            item1_desc: "Prise en charge sans attente",
+            item2_title: "Expertise médicale",
+            item2_desc: "Équipe hautement qualifiée",
+            item3_title: "Urgences 24/7",
+            item3_desc: "Toujours à votre écoute",
+            item4_title: "Haute technologie",
+            item4_desc: "Équipements de pointe",
+        },
         nav: {
             home: "Accueil",
             services: "Services",
@@ -154,6 +164,16 @@ const dictionary = {
         },
     },
     ar: {
+        featureBar: {
+            item1_title: "موعد سريع",
+            item1_desc: "استقبال بدون انتظار",
+            item2_title: "خبرة طبية",
+            item2_desc: "فريق مؤهل تأهيلاً عالياً",
+            item3_title: "طوارئ 24/7",
+            item3_desc: "دائماً في خدمتكم",
+            item4_title: "تكنولوجيا متطورة",
+            item4_desc: "معدات حديثة",
+        },
         nav: {
             home: "الرئيسية",
             services: "الخدمات",

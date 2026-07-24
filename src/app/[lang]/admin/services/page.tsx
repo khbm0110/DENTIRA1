@@ -1,18 +1,21 @@
-import { Plus, Search } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { ADMIN_SECRET_PATH } from '@/config/admin-path';
 import { deleteService } from '@/app/actions/admin';
 import RowActions from '@/components/admin/RowActions';
+import AdminSearchBox from '@/components/admin/AdminSearchBox';
 
-export default async function ServicesAdminPage({ params }: { params: { lang: string } }) {
+export default async function ServicesAdminPage({ params, searchParams }: { params: { lang: string }; searchParams: { q?: string } }) {
   const { lang } = params;
   const supabase = createClient();
-  
-  const { data: services = [], error } = await supabase
-    .from('services')
-    .select('*')
-    .order('created_at', { ascending: false });
+  const query = searchParams.q?.trim() || '';
+  const basePath = `/${lang}/${ADMIN_SECRET_PATH}/services`;
+
+  let request = supabase.from('services').select('*').order('created_at', { ascending: false });
+  if (query) request = request.or(`name_fr.ilike.%${query}%,name_ar.ilike.%${query}%`);
+
+  const { data: services = [], error } = await request;
 
   if (error) {
     console.error('Error fetching services:', error);
@@ -35,15 +38,8 @@ export default async function ServicesAdminPage({ params }: { params: { lang: st
       </div>
 
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50/50">
-          <div className="relative w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search services..." 
-              className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-            />
-          </div>
+        <div className="p-4 border-b border-slate-200 bg-slate-50/50">
+          <AdminSearchBox basePath={basePath} defaultValue={query} placeholder="Search services..." />
         </div>
 
         <table className="w-full text-left text-sm text-slate-600">
@@ -55,7 +51,7 @@ export default async function ServicesAdminPage({ params }: { params: { lang: st
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {services && services.map((service) => (
+            {services && services.length > 0 ? services.map((service: any) => (
               <tr key={service.id} className="hover:bg-slate-50/50 transition-colors">
                 <td className="px-6 py-4 font-bold text-slate-800">{service.name_fr}</td>
                 <td className="px-6 py-4">
@@ -73,7 +69,11 @@ export default async function ServicesAdminPage({ params }: { params: { lang: st
                   />
                 </td>
               </tr>
-            ))}
+            )) : (
+              <tr><td colSpan={3} className="px-6 py-10 text-center text-slate-400">
+                {query ? `No services match "${query}".` : 'No services yet. Click "Add Service" to create one.'}
+              </td></tr>
+            )}
           </tbody>
         </table>
       </div>

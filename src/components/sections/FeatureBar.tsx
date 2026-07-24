@@ -12,23 +12,23 @@ export default function FeatureBar({ lang }: { lang?: string }) {
   const features = [
     {
       icon: <Calendar className="text-primary" size={28} />,
-      title: "Rendez-vous rapide",
-      desc: "Prise en charge sans attente"
+      title: t.featureBar.item1_title,
+      desc: t.featureBar.item1_desc
     },
     {
       icon: <ShieldCheck className="text-primary" size={28} />,
-      title: "Expertise médicale",
-      desc: "Équipe hautement qualifiée"
+      title: t.featureBar.item2_title,
+      desc: t.featureBar.item2_desc
     },
     {
       icon: <Clock className="text-primary" size={28} />,
-      title: "Urgences 24/7",
-      desc: "Toujours à votre écoute"
+      title: t.featureBar.item3_title,
+      desc: t.featureBar.item3_desc
     },
     {
       icon: <CheckCircle className="text-primary" size={28} />,
-      title: "Haute technologie",
-      desc: "Équipements de pointe"
+      title: t.featureBar.item4_title,
+      desc: t.featureBar.item4_desc
     }
   ];
 

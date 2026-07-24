@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import dictionary from '@/lib/i18n/dictionary';
 import type { Metadata } from 'next';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 export async function generateMetadata({ params }: { params: { lang: string; slug: string } }): Promise<Metadata> {
   const supabase = createClient();
@@ -70,7 +71,7 @@ export default async function ServiceDetailPage({ params }: { params: { lang: st
     <main className="pt-32 pb-24 bg-surface min-h-screen" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <div className="max-w-4xl mx-auto px-6">
         <Link href={`/${lang}#services`} className="text-xs font-bold text-primary mb-6 inline-flex items-center gap-1">
-          <span className="material-symbols-outlined text-sm">{lang === 'ar' ? 'arrow_forward' : 'arrow_back'}</span>
+          {lang === 'ar' ? <ArrowRight size={14} /> : <ArrowLeft size={14} />}
           {t.nav.services}
         </Link>
 

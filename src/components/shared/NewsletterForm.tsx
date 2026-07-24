@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Loader2, Check } from 'lucide-react';
 import { subscribeToNewsletter } from '@/app/actions/public';
 
 export default function NewsletterForm({ placeholder, buttonText }: { placeholder: string; buttonText: string }) {
   const [email, setEmail] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+  const formRenderedAt = useRef(Date.now());
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
 
@@ -14,7 +16,7 @@ export default function NewsletterForm({ placeholder, buttonText }: { placeholde
     setStatus('loading');
     setError('');
     try {
-      await subscribeToNewsletter(email);
+      await subscribeToNewsletter(email, honeypot, formRenderedAt.current);
       setStatus('success');
       setEmail('');
     } catch (err: any) {
@@ -34,6 +36,17 @@ export default function NewsletterForm({ placeholder, buttonText }: { placeholde
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 w-full">
+      {/* Honeypot - invisible to real visitors, bots tend to fill every field */}
+      <input
+        type="text"
+        name="website"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
+      />
       <div className="flex-1">
         <input
           className="w-full bg-white/10 border border-white/20 text-white placeholder-white/60 rounded-full py-4 px-6 text-sm focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"

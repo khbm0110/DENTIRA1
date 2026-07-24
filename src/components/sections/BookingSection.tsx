@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Loader2, Check, MessageCircle } from 'lucide-react';
+import { Loader2, Check, MessageCircle, CalendarDays } from 'lucide-react';
 import dictionary from '@/lib/i18n/dictionary';
 import { submitAppointment } from '@/app/actions/public';
 import type { ContactInfo } from '@/lib/supabase/public-settings';
@@ -21,6 +21,8 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
+  const [honeypot, setHoneypot] = useState('');
+  const formRenderedAt = useRef(Date.now());
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -46,6 +48,8 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
         email: formData.email || undefined,
         service: formData.service,
         preferredDate,
+        honeypot,
+        formRenderedAt: formRenderedAt.current,
       });
       setStatus('success');
     } catch (err: any) {
@@ -117,7 +121,18 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
+                {/* Honeypot - real visitors never see this field (off-screen + tabIndex -1 + autoComplete off) */}
+                <input
+                  type="text"
+                  name="website"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
+                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1">{t.booking.first_name}</label>
                     <input name="firstName" value={formData.firstName} onChange={handleInputChange} required
@@ -132,7 +147,7 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1">{isAr ? 'الهاتف' : 'Téléphone'}</label>
                     <input name="phone" value={formData.phone} onChange={handleInputChange} required
@@ -158,7 +173,7 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
                   </select>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1">{isAr ? 'التاريخ' : 'Date souhaitée'}</label>
                     <input name="date" value={formData.date} onChange={handleInputChange}
@@ -181,7 +196,7 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
                   className="w-full bg-primary text-white py-5 rounded-2xl font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 mt-4 disabled:opacity-70"
                 >
                   {status === 'loading' ? <Loader2 size={20} className="animate-spin" /> : (
-                    <span className="material-symbols-outlined text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>calendar_month</span>
+                    <CalendarDays size={20} />
                   )}
                   {status === 'loading' ? (isAr ? 'جارٍ الإرسال...' : 'Envoi en cours...') : t.booking.cta}
                 </button>

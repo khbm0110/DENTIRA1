@@ -3,6 +3,7 @@ import dictionary from '@/lib/i18n/dictionary';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { CornerDownRight } from 'lucide-react';
 
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   const lang = params.lang || 'fr';
@@ -103,7 +104,7 @@ export default async function BlogPage({ params }: { params: { lang: string } })
                   </h4>
                   {article.slug && article.slug !== '#' ? (
                     <Link href={`/${lang}/blog/${article.slug}`} className="text-xs font-bold flex items-center gap-1 text-on-surface group-hover:gap-2 transition-all">
-                      <span className="material-symbols-outlined text-sm">subdirectory_arrow_right</span>
+                      <CornerDownRight size={14} />
                       {t.blog.read_more}
                     </Link>
                   ) : (

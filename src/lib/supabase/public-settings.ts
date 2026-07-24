@@ -53,6 +53,37 @@ const DEFAULT_CONTACT: ContactInfo = {
   address_ar: 'الدار البيضاء، المغرب',
 };
 
+export interface HeroContent {
+  title_fr: string | null;
+  title_ar: string | null;
+  subtitle_fr: string | null;
+  subtitle_ar: string | null;
+}
+
+/**
+ * Fetches admin-editable overrides for the homepage Hero title/subtitle.
+ * Returns nulls if nothing has been customized yet, so callers should fall
+ * back to the dictionary.ts default copy.
+ */
+export async function getHeroContent(): Promise<HeroContent> {
+  const supabase = createClient();
+  try {
+    const { data } = await supabase
+      .from('content_sections')
+      .select('title_fr, title_ar, description_fr, description_ar')
+      .eq('section_key', 'hero')
+      .single();
+
+    return {
+      title_fr: data?.title_fr || null,
+      title_ar: data?.title_ar || null,
+      subtitle_fr: data?.description_fr || null,
+      subtitle_ar: data?.description_ar || null,
+    };
+  } catch {
+    return { title_fr: null, title_ar: null, subtitle_fr: null, subtitle_ar: null };
+  }
+}
 /**
  * Single batched fetch for everything the public site's shared chrome
  * (navbar, footer, working-hours bar) needs, so switching pages/languages

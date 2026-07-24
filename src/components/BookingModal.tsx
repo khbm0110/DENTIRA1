@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import dictionary from '../lib/i18n/dictionary';
 
 import type { ContactInfo } from '../lib/supabase/public-settings';
+import { X, PhoneCall } from 'lucide-react';
 
 export interface BookingModalRef {
   openModal: () => void;
@@ -57,7 +58,7 @@ const BookingModal = forwardRef<BookingModalRef, { contact?: ContactInfo }>(({ c
             onClick={(e) => e.stopPropagation()} // Prevent closing on modal content click
           >
             <button onClick={closeModal} className="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
-              <span className="material-symbols-outlined">close</span>
+              <X size={22} />
             </button>
             
             <h3 className="font-headline text-3xl font-extrabold mb-8 text-center">{t.booking.title}</h3>
@@ -94,7 +95,7 @@ const BookingModal = forwardRef<BookingModalRef, { contact?: ContactInfo }>(({ c
                 className="w-full bg-primary text-white py-4 rounded-xl font-bold btn-hover flex items-center justify-center gap-2"
                 type="submit"
               >
-                <span className="material-symbols-outlined">contact_phone</span>
+                <PhoneCall size={18} />
                 {t.booking.cta}
               </button>
             </form>

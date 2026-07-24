@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { Smile } from 'lucide-react';
 import dictionary from '@/lib/i18n/dictionary';
 import NewsletterForm from '../shared/NewsletterForm';
 import type { ContactInfo, SocialLink } from '@/lib/supabase/public-settings';
@@ -63,9 +64,7 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-outline-variant/60 pb-16 mb-8">
           <div className="col-span-1 lg:col-span-1">
             <div className="flex items-center gap-2 mb-6">
-              <span className="material-symbols-outlined text-primary text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                dentistry
-              </span>
+              <Smile className="text-primary" size={26} strokeWidth={2.2} />
               <div className="text-xl font-bold text-on-surface">{t.common.brand_name}</div>
             </div>
             <p className="text-on-surface-variant text-sm leading-relaxed mb-6 pr-4">

@@ -6,7 +6,7 @@ import { useParams, usePathname } from 'next/navigation';
 import dictionary from '@/lib/i18n/dictionary';
 import LanguageSwitcher from '../shared/LanguageSwitcher';
 import BookingModal, { BookingModalRef } from '../BookingModal';
-import { Menu, X, Phone, MessageCircle } from 'lucide-react';
+import { Menu, X, Phone, MessageCircle, Smile } from 'lucide-react';
 import Link from 'next/link';
 
 import type { ContactInfo } from '@/lib/supabase/public-settings';
@@ -84,11 +84,7 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
           isScrolled ? 'top-4 bg-white/80 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)]' : 'top-6 bg-white/50 py-4 shadow-[0_4px_20px_rgb(0,0,0,0.02)]'
         }`}>
         <Link href={`/${lang}`} className="flex items-center gap-2 group cursor-pointer">
-          <span
-            className="material-symbols-outlined text-primary text-2xl transition-transform group-hover:rotate-12"
-            style={{ fontVariationSettings: "'FILL' 1" }}>
-            dentistry
-          </span>
+          <Smile className="text-primary transition-transform group-hover:rotate-12" size={26} strokeWidth={2.2} />
           <div className="text-xl font-bold tracking-tight">{t.common.brand_name}</div>
         </Link>
 
@@ -161,11 +157,7 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
               <div className="p-6">
                 <div className="flex justify-between items-center mb-8">
                   <Link href={`/${lang}`} className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    <span
-                      className="material-symbols-outlined text-primary text-2xl"
-                      style={{ fontVariationSettings: "'FILL' 1" }}>
-                      dentistry
-                    </span>
+                    <Smile className="text-primary" size={26} strokeWidth={2.2} />
                     <span className="text-xl font-bold">{t.common.brand_name}</span>
                   </Link>
                   <button

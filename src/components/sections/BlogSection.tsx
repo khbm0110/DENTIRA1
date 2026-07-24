@@ -2,6 +2,7 @@ import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
 export default async function BlogSection({ lang }: { lang?: string }) {
   const currentLang = lang || 'fr';
@@ -71,7 +72,7 @@ export default async function BlogSection({ lang }: { lang?: string }) {
               <div className="px-2">
                 <h4 className="font-bold text-lg mb-4 group-hover:text-primary transition-colors line-clamp-2">{blog.title}</h4>
                 <Link href={`/${currentLang}/blog/${(blog as any).slug || '#'}`} className="text-xs font-bold flex items-center gap-1 text-on-surface group-hover:gap-2 transition-all">
-                  <span className="material-symbols-outlined text-sm">arrow_forward</span> {t.blog.read_more}
+                  <ArrowRight size={14} /> {t.blog.read_more}
                 </Link>
               </div>
             </article>
@@ -82,7 +83,7 @@ export default async function BlogSection({ lang }: { lang?: string }) {
           <Link href={`/${currentLang}/blog`}>
             <span className="bg-primary text-white px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:shadow-[0_8px_25px_-5px_rgb(0,105,113,0.4)] hover:-translate-y-1 transition-all duration-300 inline-flex">
               {t.blog.view_all_articles}
-              <span className="material-symbols-outlined text-lg">arrow_outward</span>
+              <ArrowUpRight size={18} />
             </span>
           </Link>
         </div>

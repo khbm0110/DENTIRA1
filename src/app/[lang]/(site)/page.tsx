@@ -12,17 +12,20 @@ import BlogSection from '../../../components/sections/BlogSection';
 import FaqSection from '../../../components/sections/FaqSection';
 import BookingSection from '../../../components/sections/BookingSection';
 import SectionSkeleton from '../../../components/shared/SectionSkeleton';
-import { getPublicClinicSettings } from '../../../lib/supabase/public-settings';
+import { getPublicClinicSettings, getHeroContent } from '../../../lib/supabase/public-settings';
 
 // No page-level generateMetadata override needed here - the root [lang]/layout.tsx
 // already provides the homepage title/description/OG defaults.
 
 export default async function Home({ params }: { params: { lang: string } }) {
-  const settings = await getPublicClinicSettings();
+  const [settings, heroContent] = await Promise.all([
+    getPublicClinicSettings(),
+    getHeroContent(),
+  ]);
 
   return (
     <>
-      <HeroSection lang={params.lang} contact={settings.contact} hours={settings.hours} />
+      <HeroSection lang={params.lang} contact={settings.contact} hours={settings.hours} heroContent={heroContent} />
       <FeatureBar lang={params.lang} />
       <WhyChooseUsSection lang={params.lang} />
 

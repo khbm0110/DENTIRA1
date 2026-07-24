@@ -9,9 +9,19 @@ import BookingModal, { BookingModalRef } from '../BookingModal';
 import { Star, ShieldCheck, Users, ArrowRight, Calendar } from 'lucide-react';
 
 import WorkingHoursBar from './WorkingHoursBar';
-import type { ContactInfo, WorkingHours } from '@/lib/supabase/public-settings';
+import type { ContactInfo, WorkingHours, HeroContent } from '@/lib/supabase/public-settings';
 
-export default function Hero({ lang, contact, hours }: { lang?: string; contact?: ContactInfo; hours?: WorkingHours }) {
+export default function Hero({
+  lang,
+  contact,
+  hours,
+  heroContent,
+}: {
+  lang?: string;
+  contact?: ContactInfo;
+  hours?: WorkingHours;
+  heroContent?: HeroContent;
+}) {
   const targetRef = useRef<HTMLDivElement>(null);
   const bookingModalRef = useRef<BookingModalRef>(null);
   const { scrollYProgress } = useScroll({
@@ -25,6 +35,10 @@ export default function Hero({ lang, contact, hours }: { lang?: string; contact?
   const params = useParams();
   const currentLang = lang || (Array.isArray(params.lang) ? params.lang[0] : params.lang) || 'fr';
   const t = currentLang === 'ar' ? dictionary.ar : dictionary.fr;
+
+  const isAr = currentLang === 'ar';
+  const heroTitle = (isAr ? heroContent?.title_ar : heroContent?.title_fr) || t.hero.title;
+  const heroSubtitle = (isAr ? heroContent?.subtitle_ar : heroContent?.subtitle_fr) || t.hero.subtitle;
 
   const handleBookingClick = () => {
     bookingModalRef.current?.openModal();
@@ -68,12 +82,12 @@ export default function Hero({ lang, contact, hours }: { lang?: string; contact?
             </div>
             
             <h1 className="font-headline text-5xl lg:text-[5rem] font-extrabold tracking-tight leading-[1.1] mb-6 text-on-surface">
-              <span className="block">{t.hero.title.split(' ')[0]}</span>
-              <span className="text-primary">{t.hero.title.split(' ').slice(1).join(' ')}</span>
+              <span className="block">{heroTitle.split(' ')[0]}</span>
+              <span className="text-primary">{heroTitle.split(' ').slice(1).join(' ')}</span>
             </h1>
             
             <p className="text-on-surface-variant text-lg lg:text-xl leading-relaxed mb-10 max-w-lg">
-              {t.hero.subtitle}
+              {heroSubtitle}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 mb-12 w-full sm:w-auto">

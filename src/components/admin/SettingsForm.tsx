@@ -153,8 +153,8 @@ export default function SettingsForm({
         <h3 className="text-lg font-bold text-slate-800 mb-4">Working Hours</h3>
         <div className="space-y-3">
           {DAYS.map((day) => (
-            <div key={day} className="flex items-center gap-4">
-              <div className="w-28 text-sm font-semibold text-slate-600">{DAY_LABELS[day]}</div>
+            <div key={day} className="flex flex-wrap items-center gap-3 sm:gap-4 py-1">
+              <div className="w-full sm:w-28 text-sm font-semibold text-slate-600">{DAY_LABELS[day]}</div>
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -206,12 +206,12 @@ export default function SettingsForm({
             </div>
           ))}
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             placeholder="platform (e.g. facebook)"
             value={newSocial.platform}
             onChange={(e) => setNewSocial({ ...newSocial, platform: e.target.value })}
-            className="w-40 px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
+            className="w-full sm:w-40 px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none text-sm"
           />
           <input
             placeholder="https://..."
