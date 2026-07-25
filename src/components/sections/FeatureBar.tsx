@@ -35,15 +35,15 @@ export default function FeatureBar({ lang }: { lang?: string }) {
   return (
     <section className="bg-surface relative z-20 px-6 py-16">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {features.map((feature, index) => (
-            <div key={index} className="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex items-center gap-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow">
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
+            <div key={index} className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-2 sm:gap-4 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow">
+              <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 [&_svg]:w-5 [&_svg]:h-5 sm:[&_svg]:w-7 sm:[&_svg]:h-7">
                 {feature.icon}
               </div>
               <div>
-                <h3 className="font-bold text-on-surface text-base">{feature.title}</h3>
-                <p className="text-sm text-on-surface-variant mt-1">{feature.desc}</p>
+                <h3 className="font-bold text-on-surface text-xs sm:text-base">{feature.title}</h3>
+                <p className="text-[11px] sm:text-sm text-on-surface-variant mt-0.5 sm:mt-1">{feature.desc}</p>
               </div>
             </div>
           ))}

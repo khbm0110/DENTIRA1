@@ -17,9 +17,9 @@ export default async function OffersSection({ lang }: { lang?: string }) {
   if (!offers || offers.length === 0) return null;
 
   return (
-    <section id="offers" className="py-24 bg-white" dir={isAr ? 'rtl' : 'ltr'}>
+    <section id="offers" className="py-16 md:py-24 bg-white" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <span className="bg-slate-50 text-on-surface-variant px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-flex items-center gap-2">
             <Tag size={14} />
             {isAr ? 'عروض حصرية' : 'Offres Exclusives'}

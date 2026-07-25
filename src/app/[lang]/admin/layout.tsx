@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, Users, HeartPulse, MessageSquareQuote,
-  HelpCircle, FileText, CalendarCheck, CreditCard, Image as ImageIcon, Settings, LogOut, Tag, Menu, X
+  HelpCircle, FileText, CalendarCheck, CreditCard, Image as ImageIcon, Settings, LogOut, Tag, Menu, X, Camera
 } from 'lucide-react';
 import { ADMIN_SECRET_PATH } from '@/config/admin-path';
 import { signOut } from '@/lib/supabase/auth';
@@ -33,6 +33,7 @@ export default function AdminLayout({
     { name: 'Packages (الباقات)', href: `/pricing`, icon: CreditCard },
     { name: 'Offers (العروض)', href: `/offers`, icon: Tag },
     { name: 'Testimonials', href: `/testimonials`, icon: MessageSquareQuote },
+    { name: 'Gallery', href: `/gallery`, icon: Camera },
     { name: 'FAQ', href: `/faqs`, icon: HelpCircle },
     { name: 'Blog', href: `/blog`, icon: FileText },
     { name: 'Media Library', href: `/media`, icon: ImageIcon },

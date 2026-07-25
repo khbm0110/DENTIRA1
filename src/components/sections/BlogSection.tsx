@@ -40,9 +40,9 @@ export default async function BlogSection({ lang }: { lang?: string }) {
     : defaultPosts;
 
   return (
-    <section id="blog" className="py-24 bg-surface">
+    <section id="blog" className="py-16 md:py-24 bg-surface">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-8">
           <div className="max-w-2xl">
             <span className="bg-white text-on-surface-variant px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 inline-block">
               {t.blog.tag}
@@ -53,24 +53,24 @@ export default async function BlogSection({ lang }: { lang?: string }) {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 mb-10 md:mb-16">
           {displayPosts.map((blog, index) => (
             <article
               key={index}
               className="bg-white p-4 rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] group transition-all duration-300"
             >
-              <div className="aspect-[4/3] rounded-[1.25rem] overflow-hidden mb-6 relative">
+              <div className="aspect-[4/3] rounded-xl sm:rounded-[1.25rem] overflow-hidden mb-3 sm:mb-6 relative">
                 <Image
                   alt={blog.title}
                   src={blog.img}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 400px"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 400px"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   referrerPolicy="no-referrer"
                 />
               </div>
-              <div className="px-2">
-                <h4 className="font-bold text-lg mb-4 group-hover:text-primary transition-colors line-clamp-2">{blog.title}</h4>
+              <div className="px-1 sm:px-2">
+                <h4 className="font-bold text-sm sm:text-lg mb-2 sm:mb-4 group-hover:text-primary transition-colors line-clamp-2">{blog.title}</h4>
                 <Link href={`/${currentLang}/blog/${(blog as any).slug || '#'}`} className="text-xs font-bold flex items-center gap-1 text-on-surface group-hover:gap-2 transition-all">
                   <ArrowRight size={14} /> {t.blog.read_more}
                 </Link>

@@ -4,7 +4,8 @@ import { useState, useRef } from 'react';
 import { Loader2, Check } from 'lucide-react';
 import { subscribeToNewsletter } from '@/app/actions/public';
 
-export default function NewsletterForm({ placeholder, buttonText }: { placeholder: string; buttonText: string }) {
+export default function NewsletterForm({ placeholder, buttonText, lang }: { placeholder: string; buttonText: string; lang?: string }) {
+  const isAr = lang === 'ar';
   const [email, setEmail] = useState('');
   const [honeypot, setHoneypot] = useState('');
   const formRenderedAt = useRef(Date.now());
@@ -20,7 +21,7 @@ export default function NewsletterForm({ placeholder, buttonText }: { placeholde
       setStatus('success');
       setEmail('');
     } catch (err: any) {
-      setError(err?.message || 'Something went wrong. Please try again.');
+      setError(err?.message || (isAr ? 'حدث خطأ، حاول مرة أخرى.' : 'Une erreur est survenue, veuillez réessayer.'));
       setStatus('error');
     }
   };
@@ -29,7 +30,7 @@ export default function NewsletterForm({ placeholder, buttonText }: { placeholde
     return (
       <div className="flex items-center gap-2 text-white bg-white/10 rounded-full py-4 px-6 w-full sm:w-auto">
         <Check size={18} />
-        <span className="text-sm font-medium">Merci ! Vous êtes inscrit(e).</span>
+        <span className="text-sm font-medium">{isAr ? 'شكرًا! تم تسجيلك بنجاح.' : 'Merci ! Vous êtes inscrit(e).'}</span>
       </div>
     );
   }

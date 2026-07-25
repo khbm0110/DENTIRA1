@@ -47,9 +47,9 @@ export default async function ServicesSection({ lang }: { lang?: string }) {
     : defaultServices;
 
   return (
-    <section id="services" className="py-24 bg-white overflow-hidden">
+    <section id="services" className="py-16 md:py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <h2 className="font-headline text-4xl lg:text-5xl font-extrabold tracking-tight mb-6">
             Nos Services
           </h2>
@@ -58,7 +58,7 @@ export default async function ServicesSection({ lang }: { lang?: string }) {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
           {displayServices.map((service, index) => (
             <div key={index} className="bg-surface rounded-3xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)]">
               <div className="aspect-[4/3] w-full overflow-hidden relative">
@@ -66,19 +66,19 @@ export default async function ServicesSection({ lang }: { lang?: string }) {
                   src={service.img}
                   alt={service.title}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
               </div>
-              <div className="p-8">
-                <h3 className="font-headline font-bold text-xl mb-3 text-on-surface">{service.title}</h3>
-                <p className="text-on-surface-variant text-sm leading-relaxed mb-6 line-clamp-3">
+              <div className="p-4 sm:p-8">
+                <h3 className="font-headline font-bold text-base sm:text-xl mb-1.5 sm:mb-3 text-on-surface">{service.title}</h3>
+                <p className="text-on-surface-variant text-xs sm:text-sm leading-relaxed mb-3 sm:mb-6 line-clamp-2 sm:line-clamp-3">
                   {service.desc}
                 </p>
-                <button className="flex items-center gap-2 text-primary font-bold text-sm group-hover:gap-3 transition-all">
-                  En savoir plus
-                  <ArrowRight size={16} />
+                <button className="flex items-center gap-1.5 sm:gap-2 text-primary font-bold text-xs sm:text-sm group-hover:gap-3 transition-all">
+                  {currentLang === 'ar' ? 'اعرف أكثر' : 'En savoir plus'}
+                  <ArrowRight size={14} className="sm:w-4 sm:h-4" />
                 </button>
               </div>
             </div>

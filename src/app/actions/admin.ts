@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { runGoogleReviewsSync } from '@/lib/google-reviews-sync';
+import { runInstagramSync } from '@/lib/instagram-sync';
 import { slugify } from '@/lib/utils/slugify';
 
 // A tiny guard used at the top of every mutating action. RLS already blocks
@@ -339,6 +340,45 @@ export async function addTestimonial(data: any) {
   const { error } = await supabase.from('testimonials').insert([{ ...data, source: 'manual' }]);
   if (error) throw new Error(error.message);
   revalidatePath('/[lang]/admin/testimonials', 'page');
+  revalidatePath('/[lang]', 'page');
+  return { success: true };
+}
+
+// ---------------------------------------------------------------------------
+// INSTAGRAM GALLERY
+// ---------------------------------------------------------------------------
+export async function saveInstagramToken(accessToken: string) {
+  const supabase = await assertAdmin();
+  const { error } = await supabase
+    .from('clinic_settings')
+    .upsert({ key: 'instagram', value: { access_token: accessToken } }, { onConflict: 'key' });
+  if (error) throw new Error(error.message);
+  revalidatePath('/[lang]/admin/gallery', 'page');
+  return { success: true };
+}
+
+export async function syncInstagramGallery() {
+  const supabase = await assertAdmin();
+  const result = await runInstagramSync(supabase);
+  revalidatePath('/[lang]/admin/gallery', 'page');
+  revalidatePath('/[lang]', 'page');
+  return result;
+}
+
+export async function setGalleryImagePublished(id: string, isPublished: boolean) {
+  const supabase = await assertAdmin();
+  const { error } = await supabase.from('gallery_images').update({ is_published: isPublished }).eq('id', id);
+  if (error) throw new Error(error.message);
+  revalidatePath('/[lang]/admin/gallery', 'page');
+  revalidatePath('/[lang]', 'page');
+  return { success: true };
+}
+
+export async function deleteGalleryImage(id: string) {
+  const supabase = await assertAdmin();
+  const { error } = await supabase.from('gallery_images').delete().eq('id', id);
+  if (error) throw new Error(error.message);
+  revalidatePath('/[lang]/admin/gallery', 'page');
   revalidatePath('/[lang]', 'page');
   return { success: true };
 }

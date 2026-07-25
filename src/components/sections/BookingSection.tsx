@@ -70,7 +70,7 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
   const mapQuery = encodeURIComponent(address || 'Casablanca, Maroc');
 
   return (
-    <section id="booking" className="py-24 bg-surface relative overflow-hidden" dir={isAr ? 'rtl' : 'ltr'}>
+    <section id="booking" className="py-16 md:py-24 bg-surface relative overflow-hidden" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
         <motion.div

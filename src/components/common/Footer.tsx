@@ -39,12 +39,12 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
   ];
 
   return (
-    <footer id="contact" className="bg-gradient-to-br from-surface to-teal-50 pt-32 pb-12 relative overflow-hidden">
+    <footer id="contact" className="bg-gradient-to-br from-surface to-teal-50 pt-16 md:pt-32 pb-12 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
-        <div className="bg-primary text-white rounded-[2.5rem] p-10 lg:p-14 mb-20 shadow-[0_20px_50px_rgb(0,105,113,0.3)] relative overflow-hidden">
+        <div className="bg-primary text-white rounded-[2.5rem] p-8 sm:p-10 lg:p-14 mb-12 md:mb-20 shadow-[0_20px_50px_rgb(0,105,113,0.3)] relative overflow-hidden">
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-2xl"></div>
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/10 rounded-full blur-2xl"></div>
 
@@ -54,10 +54,10 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
                 {t.footer.title}
               </h2>
               <p className="text-white/80 text-lg">
-                Restez informé de nos dernières actualités et conseils dentaires.
+                {lang === 'ar' ? 'ابق على اطلاع بآخر أخبارنا ونصائحنا لطب الأسنان.' : 'Restez informé de nos dernières actualités et conseils dentaires.'}
               </p>
             </div>
-            <NewsletterForm placeholder={t.footer.email_placeholder} buttonText={t.footer.subscribe} />
+            <NewsletterForm placeholder={t.footer.email_placeholder} buttonText={t.footer.subscribe} lang={lang} />
           </div>
         </div>
 
@@ -68,7 +68,7 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
               <div className="text-xl font-bold text-on-surface">{t.common.brand_name}</div>
             </div>
             <p className="text-on-surface-variant text-sm leading-relaxed mb-6 pr-4">
-              Votre clinique de confiance pour des soins dentaires d'excellence à Casablanca.
+              {lang === 'ar' ? 'عيادتكم الموثوقة للحصول على رعاية أسنان متميزة بالدار البيضاء.' : "Votre clinique de confiance pour des soins dentaires d'excellence à Casablanca."}
             </p>
             {social && social.length > 0 && (
               <div className="flex gap-3">

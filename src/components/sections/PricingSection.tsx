@@ -16,9 +16,9 @@ export default async function PricingSection({ lang }: { lang?: string }) {
   if (!plans || plans.length === 0) return null; // nothing to show yet, don't render an empty section
 
   return (
-    <section id="pricing" className="py-24 bg-slate-50" dir={currentLang === 'ar' ? 'rtl' : 'ltr'}>
+    <section id="pricing" className="py-16 md:py-24 bg-slate-50" dir={currentLang === 'ar' ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 md:mb-16">
           <span className="bg-white text-on-surface-variant px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">
             {t.annualSubscription.tag}
           </span>

@@ -4,6 +4,7 @@ import FeatureBar from '../../../components/sections/FeatureBar';
 import WhyChooseUsSection from '../../../components/sections/WhyChooseUsSection';
 import ServicesSection from '../../../components/sections/ServicesSection';
 import OffersSection from '../../../components/sections/OffersSection';
+import GallerySection from '../../../components/sections/GallerySection';
 import PricingSection from '../../../components/sections/PricingSection';
 import TestimonialsSection from '../../../components/sections/TestimonialsSection';
 import DoctorsTeamSection from '../../../components/sections/DoctorsTeamSection';
@@ -47,6 +48,10 @@ export default async function Home({ params }: { params: { lang: string } }) {
       </Suspense>
       <Suspense fallback={<SectionSkeleton />}>
         <DoctorsTeamSection lang={params.lang} />
+      </Suspense>
+
+      <Suspense fallback={null}>
+        <GallerySection lang={params.lang} />
       </Suspense>
 
       <StatisticsSection lang={params.lang} />

@@ -11,7 +11,7 @@ export default function WhyChooseUsSection({ lang }: { lang?: string }) {
   const t = currentLang === 'ar' ? dictionary.ar : dictionary.fr;
 
   return (
-    <section id="why-choose" className="py-24 bg-surface overflow-hidden">
+    <section id="why-choose" className="py-16 md:py-24 bg-surface overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           
@@ -30,7 +30,7 @@ export default function WhyChooseUsSection({ lang }: { lang?: string }) {
             </div>
             <div className="space-y-4">
               <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold tracking-wider uppercase mb-2">
-                Docteur Principal
+                {t.doctorProfile.role_label}
               </div>
               <h3 className="font-headline font-bold text-3xl text-on-surface">{t.doctorProfile.name}</h3>
               <p className="text-sm font-bold text-on-surface-variant">{t.doctorProfile.title}</p>
@@ -43,7 +43,7 @@ export default function WhyChooseUsSection({ lang }: { lang?: string }) {
                 <span className="text-on-surface-variant">4.9 {t.doctorProfile.reviews}</span>
               </div>
               <p className="text-on-surface-variant text-sm leading-relaxed mt-4">
-                Avec plus de 15 ans d'expérience, le Dr. El Amrani s'engage à offrir les meilleurs soins avec une approche douce et professionnelle.
+                {t.doctorProfile.bio}
               </p>
             </div>
           </div>
@@ -58,15 +58,15 @@ export default function WhyChooseUsSection({ lang }: { lang?: string }) {
                 {t.whyChooseUs.title}
               </h2>
               <p className="text-white/80 text-lg mb-8 max-w-md">
-                Nous combinons expertise, technologie de pointe et approche humaine pour vous offrir une expérience sans douleur.
+                {t.whyChooseUs.subtitle}
               </p>
               
               <ul className="space-y-4">
                 {[
-                  "Équipements de dernière génération",
-                  "Traitements 100% indolores",
-                  "Stérilisation aux normes strictes",
-                  "Suivi personnalisé post-traitement"
+                  t.whyChooseUs.list1,
+                  t.whyChooseUs.list2,
+                  t.whyChooseUs.list3,
+                  t.whyChooseUs.list4
                 ].map((item, index) => (
                   <li key={index} className="flex items-center gap-4">
                     <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
