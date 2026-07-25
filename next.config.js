@@ -89,6 +89,16 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'assets.mixkit.co',
       },
+      {
+        // Instagram/Facebook CDN - media_url from the Instagram Graph API
+        // comes from various scontent-*.cdninstagram.com subdomains.
+        protocol: 'https',
+        hostname: '*.cdninstagram.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.fbcdn.net',
+      },
     ],
     // Enable modern image formats
     formats: ['image/avif', 'image/webp'],
