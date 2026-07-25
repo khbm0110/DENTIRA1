@@ -10,6 +10,12 @@ const dictionary = {
             item4_title: "Haute technologie",
             item4_desc: "Équipements de pointe",
         },
+        stats: {
+            patients: "Patients Satisfaits",
+            experience: "Années d'Expérience",
+            specialists: "Spécialistes",
+            rating: "Note Google",
+        },
         nav: {
             home: "Accueil",
             services: "Services",
@@ -28,6 +34,11 @@ const dictionary = {
         },
         whyChooseUs: {
             title: "Pourquoi choisir Dentora ?",
+            subtitle: "Nous combinons expertise, technologie de pointe et approche humaine pour vous offrir une expérience sans douleur.",
+            list1: "Équipements de dernière génération",
+            list2: "Traitements 100% indolores",
+            list3: "Stérilisation aux normes strictes",
+            list4: "Suivi personnalisé post-traitement",
             card1_title: "Soins complets",
             card1_desc: "Des examens de routine aux procédures complexes, nous offrons une gamme complète de services.",
             smiles: "100+ sourires transformés",
@@ -160,6 +171,8 @@ const dictionary = {
         doctorProfile: {
             name: "Dr. Laila El Amrani",
             title: "Chirurgien-dentiste en chef",
+            role_label: "Docteur Principal",
+            bio: "Avec plus de 15 ans d'expérience, le Dr. El Amrani s'engage à offrir les meilleurs soins avec une approche douce et professionnelle.",
             reviews: "(124 avis)"
         },
     },
@@ -173,6 +186,12 @@ const dictionary = {
             item3_desc: "دائماً في خدمتكم",
             item4_title: "تكنولوجيا متطورة",
             item4_desc: "معدات حديثة",
+        },
+        stats: {
+            patients: "مريض راضٍ",
+            experience: "سنوات من الخبرة",
+            specialists: "أخصائي",
+            rating: "تقييم جوجل",
         },
         nav: {
             home: "الرئيسية",
@@ -192,6 +211,11 @@ const dictionary = {
         },
         whyChooseUs: {
             title: "لماذا تختار دينتورا؟",
+            subtitle: "نجمع بين الخبرة والتكنولوجيا المتطورة والتعامل الإنساني لنقدم لكم تجربة بدون ألم.",
+            list1: "أحدث الأجهزة والمعدات",
+            list2: "علاجات بدون ألم 100%",
+            list3: "تعقيم وفق معايير صارمة",
+            list4: "متابعة شخصية بعد العلاج",
             card1_title: "رعاية شاملة",
             card1_desc: "من الفحوصات الروتينية إلى الإجراءات المعقدة، نقدم مجموعة كاملة من الخدمات.",
             smiles: "أكثر من 100 ابتسامة متغيرة",
@@ -324,6 +348,8 @@ const dictionary = {
         doctorProfile: {
             name: "د. ليلى العمراني",
             title: "كبير أطباء جراحة الأسنان",
+            role_label: "الطبيبة الرئيسية",
+            bio: "بخبرة تفوق 15 سنة، تلتزم الدكتورة العمراني بتقديم أفضل رعاية بأسلوب لطيف واحترافي.",
             reviews: "(124 مراجعة)"
         },
       },
