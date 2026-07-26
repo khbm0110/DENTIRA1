@@ -16,6 +16,10 @@ const dictionary = {
             specialists: "Spécialistes",
             rating: "Note Google",
         },
+        team: {
+            title: "Notre Équipe Médicale",
+            subtitle: "Rencontrez nos spécialistes dévoués à vous offrir les meilleurs soins dentaires avec douceur et professionnalisme.",
+        },
         nav: {
             home: "Accueil",
             services: "Services",
@@ -192,6 +196,10 @@ const dictionary = {
             experience: "سنوات من الخبرة",
             specialists: "أخصائي",
             rating: "تقييم جوجل",
+        },
+        team: {
+            title: "فريقنا الطبي",
+            subtitle: "تعرف على أخصائيينا المتفانين لتقديم أفضل رعاية أسنان بلطف واحترافية.",
         },
         nav: {
             home: "الرئيسية",
