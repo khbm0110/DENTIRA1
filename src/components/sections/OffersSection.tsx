@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import Image from 'next/image';
 import { Tag } from 'lucide-react';
+import AnimateIn from '../shared/AnimateIn';
 
 export default async function OffersSection({ lang }: { lang?: string }) {
   const currentLang = lang || 'fr';
@@ -19,7 +20,7 @@ export default async function OffersSection({ lang }: { lang?: string }) {
   return (
     <section id="offers" className="py-16 md:py-24 bg-white" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-10 md:mb-16">
+        <AnimateIn className="text-center mb-10 md:mb-16">
           <span className="bg-slate-50 text-on-surface-variant px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-flex items-center gap-2">
             <Tag size={14} />
             {isAr ? 'عروض حصرية' : 'Offres Exclusives'}
@@ -27,7 +28,7 @@ export default async function OffersSection({ lang }: { lang?: string }) {
           <h2 className="font-headline text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface">
             {isAr ? 'العروض الحالية' : 'Nos Offres du Moment'}
           </h2>
-        </div>
+        </AnimateIn>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {offers.map((offer: any) => {

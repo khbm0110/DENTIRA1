@@ -3,6 +3,7 @@ import dictionary from '@/lib/i18n/dictionary';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import AnimateIn from '../shared/AnimateIn';
 
 export default async function BlogSection({ lang }: { lang?: string }) {
   const currentLang = lang || 'fr';
@@ -42,7 +43,7 @@ export default async function BlogSection({ lang }: { lang?: string }) {
   return (
     <section id="blog" className="py-16 md:py-24 bg-surface">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-8">
+        <AnimateIn className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-16 gap-8">
           <div className="max-w-2xl">
             <span className="bg-white text-on-surface-variant px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 inline-block">
               {t.blog.tag}
@@ -51,13 +52,14 @@ export default async function BlogSection({ lang }: { lang?: string }) {
               {t.blog.title}
             </h2>
           </div>
-        </div>
+        </AnimateIn>
         
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8 mb-10 md:mb-16">
           {displayPosts.map((blog, index) => (
-            <article
+            <AnimateIn
               key={index}
-              className="bg-white p-4 rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] group transition-all duration-300"
+              delay={index * 0.08}
+              className="!block bg-white p-4 rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)] group transition-all duration-300"
             >
               <div className="aspect-[4/3] rounded-xl sm:rounded-[1.25rem] overflow-hidden mb-3 sm:mb-6 relative">
                 <Image
@@ -75,7 +77,7 @@ export default async function BlogSection({ lang }: { lang?: string }) {
                   <ArrowRight size={14} /> {t.blog.read_more}
                 </Link>
               </div>
-            </article>
+            </AnimateIn>
           ))}
         </div>
         

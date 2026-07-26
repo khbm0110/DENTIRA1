@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { Smile } from 'lucide-react';
 import dictionary from '@/lib/i18n/dictionary';
 import NewsletterForm from '../shared/NewsletterForm';
@@ -44,7 +45,13 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
-        <div className="bg-primary text-white rounded-[2.5rem] p-8 sm:p-10 lg:p-14 mb-12 md:mb-20 shadow-[0_20px_50px_rgb(0,105,113,0.3)] relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="bg-primary text-white rounded-[2.5rem] p-8 sm:p-10 lg:p-14 mb-12 md:mb-20 shadow-[0_20px_50px_rgb(0,105,113,0.3)] relative overflow-hidden"
+        >
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-2xl"></div>
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/10 rounded-full blur-2xl"></div>
 
@@ -59,7 +66,7 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
             </div>
             <NewsletterForm placeholder={t.footer.email_placeholder} buttonText={t.footer.subscribe} lang={lang} />
           </div>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-outline-variant/60 pb-16 mb-8">
           <div className="col-span-1 lg:col-span-1">
@@ -110,7 +117,7 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
             <h6 className="text-sm font-bold text-on-surface mb-6">Contact</h6>
             <ul className="space-y-4 text-sm font-medium text-on-surface-variant">
               <li><a className="hover:text-primary transition-colors block" href={`mailto:${email}`}>{email}</a></li>
-              <li><a className="hover:text-primary transition-colors block" href={`tel:${phone}`}>{phone}</a></li>
+              <li><a className="hover:text-primary transition-colors block" href={`tel:${phone}`} dir="ltr" style={{ unicodeBidi: 'isolate' }}>{phone}</a></li>
               <li className="leading-relaxed">{address}</li>
             </ul>
           </div>

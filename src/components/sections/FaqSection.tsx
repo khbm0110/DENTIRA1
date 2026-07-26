@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import FaqAccordion from './FaqAccordion';
+import AnimateIn from '../shared/AnimateIn';
 
 export default async function FaqSection({ lang }: { lang?: string }) {
   const currentLang = lang || 'fr';
@@ -22,11 +23,11 @@ export default async function FaqSection({ lang }: { lang?: string }) {
   return (
     <section id="faq" className="py-16 md:py-24 bg-slate-50" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="max-w-3xl mx-auto px-6">
-        <div className="text-center mb-10 md:mb-16">
+        <AnimateIn className="text-center mb-10 md:mb-16">
           <h2 className="font-headline text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface">
             {isAr ? 'الأسئلة الشائعة' : 'Questions Fréquentes'}
           </h2>
-        </div>
+        </AnimateIn>
         <FaqAccordion items={items} />
       </div>
     </section>

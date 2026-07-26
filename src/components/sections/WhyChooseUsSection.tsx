@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import dictionary from '@/lib/i18n/dictionary';
 import { CheckCircle } from 'lucide-react';
 
@@ -16,7 +17,13 @@ export default function WhyChooseUsSection({ lang }: { lang?: string }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           
           {/* Doctor Card (Left) */}
-          <div className="bg-white rounded-[2.5rem] p-8 flex flex-col md:flex-row gap-8 items-center shadow-[0_10px_40px_rgb(0,0,0,0.04)]">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="bg-white rounded-[2.5rem] p-8 flex flex-col md:flex-row gap-8 items-center shadow-[0_10px_40px_rgb(0,0,0,0.04)]"
+          >
             <div className="w-full md:w-64 aspect-[4/5] rounded-[2rem] overflow-hidden bg-slate-100 shrink-0 relative">
               <Image
                 alt={t.doctorProfile.name}
@@ -46,10 +53,16 @@ export default function WhyChooseUsSection({ lang }: { lang?: string }) {
                 {t.doctorProfile.bio}
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Why Choose Us Card (Right) */}
-          <div className="bg-primary text-white rounded-[2.5rem] p-10 lg:p-12 shadow-[0_15px_40px_rgb(0,105,113,0.2)] flex flex-col justify-center relative overflow-hidden">
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="bg-primary text-white rounded-[2.5rem] p-10 lg:p-12 shadow-[0_15px_40px_rgb(0,105,113,0.2)] flex flex-col justify-center relative overflow-hidden"
+          >
             {/* Background Decoration */}
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
             
@@ -68,16 +81,23 @@ export default function WhyChooseUsSection({ lang }: { lang?: string }) {
                   t.whyChooseUs.list3,
                   t.whyChooseUs.list4
                 ].map((item, index) => (
-                  <li key={index} className="flex items-center gap-4">
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.2 + index * 0.1, ease: 'easeOut' }}
+                    className="flex items-center gap-4"
+                  >
                     <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
                       <CheckCircle className="text-white w-5 h-5" />
                     </div>
                     <span className="font-semibold text-lg">{item}</span>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>

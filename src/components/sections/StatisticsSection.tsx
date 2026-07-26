@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { motion } from 'framer-motion';
 import dictionary from '@/lib/i18n/dictionary';
 import { Users, Star, Award, ShieldPlus } from 'lucide-react';
 
@@ -35,7 +36,13 @@ export default function StatisticsSection({ lang }: { lang?: string }) {
   return (
     <section className="py-16 md:py-24 bg-white px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-primary-dark via-primary to-primary-light rounded-3xl sm:rounded-[3rem] p-6 sm:p-12 lg:p-16 relative overflow-hidden shadow-[0_20px_50px_rgb(0,105,113,0.3)]">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="bg-gradient-to-r from-primary-dark via-primary to-primary-light rounded-3xl sm:rounded-[3rem] p-6 sm:p-12 lg:p-16 relative overflow-hidden shadow-[0_20px_50px_rgb(0,105,113,0.3)]"
+        >
           {/* Decorative Background Elements */}
           <div className="absolute -top-24 -left-24 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
           <div className="absolute -bottom-24 -right-24 w-80 h-80 bg-black/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -55,7 +62,7 @@ export default function StatisticsSection({ lang }: { lang?: string }) {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

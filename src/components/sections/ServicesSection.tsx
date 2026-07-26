@@ -2,6 +2,7 @@ import Image from 'next/image';
 import dictionary from '@/lib/i18n/dictionary';
 import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
+import AnimateIn from '../shared/AnimateIn';
 
 export default async function ServicesSection({ lang }: { lang?: string }) {
   const currentLang = lang || 'fr';
@@ -49,18 +50,18 @@ export default async function ServicesSection({ lang }: { lang?: string }) {
   return (
     <section id="services" className="py-16 md:py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-10 md:mb-16">
+        <AnimateIn className="text-center mb-10 md:mb-16">
           <h2 className="font-headline text-4xl lg:text-5xl font-extrabold tracking-tight mb-6">
-            Nos Services
+            {t.services.title}
           </h2>
           <p className="text-on-surface-variant text-lg max-w-2xl mx-auto">
-            Des soins dentaires complets pour répondre à tous vos besoins, de la prévention à la restauration esthétique.
+            {t.services.subtitle}
           </p>
-        </div>
+        </AnimateIn>
         
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
           {displayServices.map((service, index) => (
-            <div key={index} className="bg-surface rounded-3xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)]">
+            <AnimateIn key={index} delay={index * 0.08} className="bg-surface rounded-3xl overflow-hidden group hover:-translate-y-2 transition-all duration-300 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.08)]">
               <div className="aspect-[4/3] w-full overflow-hidden relative">
                 <Image
                   src={service.img}
@@ -81,7 +82,7 @@ export default async function ServicesSection({ lang }: { lang?: string }) {
                   <ArrowRight size={14} className="sm:w-4 sm:h-4" />
                 </button>
               </div>
-            </div>
+            </AnimateIn>
           ))}
         </div>
       </div>

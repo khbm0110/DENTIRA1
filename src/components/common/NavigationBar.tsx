@@ -113,7 +113,7 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
               <Phone size={16} className="text-primary" />
             </div>
-            <span className="hidden lg:inline">{displayPhoneNumber}</span>
+            <span dir="ltr" className="hidden lg:inline">{displayPhoneNumber}</span>
           </a>
           
           <div className="mx-1">
@@ -197,7 +197,7 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
                     className="flex items-center gap-3 p-4 bg-surface rounded-2xl hover:bg-primary/10 transition-colors"
                   >
                     <Phone className="text-primary" size={20} />
-                    <span className="font-medium">{displayPhoneNumber}</span>
+                    <span dir="ltr" className="font-medium">{displayPhoneNumber}</span>
                   </a>
                   <a
                     href={`https://wa.me/${whatsappNumber}`}

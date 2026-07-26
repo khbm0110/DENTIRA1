@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
 export default function FaqAccordion({ items }: { items: { question: string; answer: string }[] }) {
@@ -11,7 +12,14 @@ export default function FaqAccordion({ items }: { items: { question: string; ans
       {items.map((item, index) => {
         const isOpen = openIndex === index;
         return (
-          <div key={index} className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] overflow-hidden">
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.4, delay: index * 0.06, ease: 'easeOut' }}
+            className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] overflow-hidden"
+          >
             <button
               onClick={() => setOpenIndex(isOpen ? null : index)}
               className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
@@ -26,7 +34,7 @@ export default function FaqAccordion({ items }: { items: { question: string; ans
                 <p className="px-6 pb-5 text-sm text-on-surface-variant leading-relaxed">{item.answer}</p>
               </div>
             </div>
-          </div>
+          </motion.div>
         );
       })}
     </div>
