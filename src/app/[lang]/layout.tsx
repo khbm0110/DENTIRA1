@@ -163,11 +163,11 @@ export default async function RootLayout({ children, params }: { children: React
       style={{ '--font-headline': "'Manrope', sans-serif", '--font-body': "'Inter', sans-serif" } as React.CSSProperties}
     >
       <head>
-        <meta name="theme-color" content="#36C2CF" />
+        <meta name="theme-color" content="#0EA5E9" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
-      <body suppressHydrationWarning className="bg-surface text-on-surface font-body selection:bg-primary/20 overflow-x-hidden scroll-smooth">
+      <body suppressHydrationWarning className="bg-background text-foreground font-body overflow-x-hidden">
         {children}
         <ToastContainer />
       </body>

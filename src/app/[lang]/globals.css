@@ -4,22 +4,35 @@
 
 @layer base {
   :root {
-    /* CC Design Color Palette - Using Tailwind HSL format */
-    --primary: 185 64% 52%;
-    --primary-dark: 186 100% 22%;
-    --primary-foreground: 210 40% 98%;
-    --surface: 240 10% 99%;
-    --on-surface: 240 10% 4%;
-    --on-surface-variant: 220 9% 39%;
-    --outline-variant: 220 7% 91%;
-    --background: 0 0% 100%;
-    --foreground: 240 10% 4%;
+    /* UI/UX Pro Max Design System — Dental Practice Palette */
+    --primary: 199 89% 48%;
+    --primary-dark: 211 96% 32%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 199 89% 60%;
+    --secondary-foreground: 215 28% 17%;
+    --accent: 142 71% 45%;
+    --accent-foreground: 0 0% 100%;
+    --surface: 207 89% 97%;
+    --on-surface: 211 96% 32%;
+    --on-surface-variant: 215 14% 34%;
+    --outline-variant: 199 67% 86%;
+    --background: 207 89% 97%;
+    --foreground: 211 96% 32%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 4%;
+    --card-foreground: 211 96% 32%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 14% 34%;
+    --border: 199 67% 86%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 199 89% 48%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 211 96% 32%;
+    --input: 199 67% 86%;
   }
 
   body {
-    @apply bg-surface text-on-surface font-body selection:bg-primary/20 overflow-x-hidden;
+    @apply bg-background text-foreground font-body selection:bg-primary/15 overflow-x-hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -29,11 +42,23 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/85 backdrop-blur-md border border-white/30;
+    @apply bg-white/90 backdrop-blur-xl border border-white/40 shadow-[0_2px_8px_rgba(0,0,0,0.04),0_8px_32px_rgba(14,165,233,0.06)];
+  }
+
+  .soft-card {
+    @apply bg-white rounded-2xl shadow-[0_2px_4px_rgba(0,0,0,0.03),0_8px_24px_rgba(14,165,233,0.07)] border border-outline-variant/40;
+  }
+
+  .soft-card-hover {
+    @apply soft-card transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_4px_8px_rgba(0,0,0,0.05),0_16px_40px_rgba(14,165,233,0.12)];
   }
 
   .clinical-shadow {
-    box-shadow: 0 10px 40px -10px rgba(0, 105, 113, 0.06);
+    box-shadow: 0 2px 4px rgba(14, 165, 233, 0.03), 0 8px 24px rgba(14, 165, 233, 0.07);
+  }
+
+  .clinical-shadow-lg {
+    box-shadow: 0 4px 8px rgba(14, 165, 233, 0.04), 0 16px 40px rgba(14, 165, 233, 0.10);
   }
 
   .no-scrollbar::-webkit-scrollbar {
@@ -46,15 +71,39 @@
   }
 
   .watermark-text {
-    @apply absolute -bottom-10 left-1/2 -translate-x-1/2 text-[20rem] font-black text-black/5 pointer-events-none z-0 leading-none;
+    @apply absolute -bottom-10 left-1/2 -translate-x-1/2 text-[20rem] font-black text-primary/5 pointer-events-none z-0 leading-none;
   }
 
-  .btn-hover {
-    @apply transition-all duration-300 relative overflow-hidden active:scale-95;
+  .btn-primary {
+    @apply bg-primary text-white px-8 py-3.5 rounded-2xl font-bold text-base shadow-[0_4px_14px_rgba(14,165,233,0.35)] transition-all duration-300 cursor-pointer hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(14,165,233,0.40)] active:scale-[0.98];
   }
 
-  .btn-hover:hover {
-    @apply -translate-y-0.5 scale-105 shadow-lg shadow-primary/40;
+  .btn-outline {
+    @apply bg-white text-foreground border-2 border-outline-variant px-8 py-3.5 rounded-2xl font-bold text-base transition-all duration-300 cursor-pointer hover:border-primary hover:text-primary hover:-translate-y-0.5 active:scale-[0.98];
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-foreground px-6 py-3 rounded-2xl font-semibold text-base transition-all duration-200 cursor-pointer hover:bg-primary/8 active:scale-[0.98];
+  }
+
+  .section-padding {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+
+  .section-container {
+    @apply max-w-7xl mx-auto px-5 sm:px-6 lg:px-8;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-semibold;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary/10 text-primary border border-primary/15;
+  }
+
+  .badge-accent {
+    @apply badge bg-accent/10 text-accent border border-accent/15;
   }
 }
 
@@ -77,4 +126,24 @@
 
 .material-symbols-fill {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary/50;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
