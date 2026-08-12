@@ -4,8 +4,8 @@
   "description": "Advanced dental solutions and personalized care for optimal oral health in Casablanca",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#36C2CF",
+  "background_color": "#F0F9FF",
+  "theme_color": "#0EA5E9",
   "orientation": "portrait-primary",
   "scope": "/",
   "icons": [
