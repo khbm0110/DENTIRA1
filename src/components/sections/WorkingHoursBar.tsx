@@ -50,7 +50,7 @@ export default function WorkingHoursBar({ hours }: { hours?: WorkingHours }) {
   }, []);
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 w-full bg-white border-t border-gray-100 z-20">
+    <div className="absolute bottom-0 left-0 right-0 w-full bg-white/90 backdrop-blur-xl border-t border-outline-variant/30 z-20">
       <div className="max-w-7xl mx-auto lg:px-6">
         {/* Mobile / tablet: horizontal swipeable slider */}
         <div
@@ -60,12 +60,12 @@ export default function WorkingHoursBar({ hours }: { hours?: WorkingHours }) {
           {workingHours.map((item, index) => (
             <div
               key={index}
-              className={`snap-center shrink-0 w-24 flex flex-col items-center justify-center text-center py-2.5 rounded-xl ${
-                item.isToday ? 'bg-primary/10' : ''
+              className={`snap-center shrink-0 w-24 flex flex-col items-center justify-center text-center py-2.5 rounded-xl transition-colors ${
+                item.isToday ? 'bg-primary/10' : 'hover:bg-surface'
               }`}
             >
-              <span className={`text-xs font-bold mb-1 ${item.isToday ? 'text-primary' : 'text-[#222222]'}`}>{item.day}</span>
-              <span className={`text-[11px] ${item.time === t.contact.closed ? 'text-red-500/90' : 'text-gray-400'}`}>
+              <span className={`text-xs font-bold mb-1 ${item.isToday ? 'text-primary' : 'text-foreground'}`}>{item.day}</span>
+              <span className={`text-[11px] ${item.time === t.contact.closed ? 'text-destructive' : 'text-on-surface-variant'}`}>
                 {item.time}
               </span>
             </div>
@@ -73,11 +73,11 @@ export default function WorkingHoursBar({ hours }: { hours?: WorkingHours }) {
         </div>
 
         {/* Desktop: full row, no scrolling needed */}
-        <div className="hidden lg:grid grid-cols-7 divide-x divide-gray-100">
+        <div className="hidden lg:grid grid-cols-7 divide-x divide-outline-variant/30">
           {workingHours.map((item, index) => (
             <div key={index} className="flex flex-col items-center justify-center text-center py-8">
-              <span className="text-sm font-medium text-[#222222] mb-1.5">{item.day}</span>
-              <span className={`text-xs ${item.time === t.contact.closed ? 'text-red-500/90' : 'text-gray-400'}`}>
+              <span className={`text-sm font-medium mb-1.5 ${item.isToday ? 'text-primary font-bold' : 'text-foreground'}`}>{item.day}</span>
+              <span className={`text-xs ${item.time === t.contact.closed ? 'text-destructive' : 'text-on-surface-variant'}`}>
                 {item.time}
               </span>
             </div>

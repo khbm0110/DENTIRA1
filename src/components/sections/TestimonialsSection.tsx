@@ -47,10 +47,13 @@ export default async function TestimonialsSection({ lang }: { lang?: string }) {
     : fallbackReviews;
 
   return (
-    <section id="testimonials" className="py-16 md:py-24 bg-surface">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-10 md:mb-16">
-          <h2 className="font-headline text-4xl lg:text-5xl font-extrabold tracking-tight text-on-surface">
+    <section id="testimonials" className="section-padding bg-surface">
+      <div className="section-container">
+        <div className="text-center mb-12 md:mb-16">
+          <div className="badge-primary mb-5 mx-auto w-fit">
+            {currentLang === 'ar' ? 'آراء المرضى' : 'Témoignages'}
+          </div>
+          <h2 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
             {t.testimonials.title}
           </h2>
         </div>

@@ -69,16 +69,18 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
   const address = isAr ? contact?.address_ar : contact?.address_fr;
   const mapQuery = encodeURIComponent(address || 'Casablanca, Maroc');
 
+  const inputClass = 'w-full bg-surface border border-outline-variant/50 rounded-xl py-3.5 px-5 text-sm text-foreground placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all duration-200 outline-none';
+
   return (
-    <section id="booking" className="py-16 md:py-24 bg-surface relative overflow-hidden" dir={isAr ? 'rtl' : 'ltr'}>
-      <div className="max-w-7xl mx-auto px-6 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <section id="booking" className="section-padding bg-white relative overflow-hidden" dir={isAr ? 'rtl' : 'ltr'}>
+      <div className="section-container relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
+          initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="rounded-[2.5rem] overflow-hidden aspect-square shadow-[0_20px_50px_rgb(0,0,0,0.05)] border-4 border-white"
+          transition={{ duration: 0.6 }}
+          className="rounded-2xl overflow-hidden aspect-square shadow-soft-xl border-4 border-white"
         >
           <iframe
             src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
@@ -93,18 +95,18 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: 50 }}
+          initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="bg-white p-10 sm:p-14 rounded-[2.5rem] shadow-[0_20px_50px_rgb(0,0,0,0.05)]"
+          transition={{ duration: 0.6 }}
+          className="soft-card p-8 sm:p-10"
         >
           {status === 'success' ? (
             <div className="text-center py-10">
-              <div className="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-accent/10 text-accent flex items-center justify-center mx-auto mb-6">
                 <Check size={32} />
               </div>
-              <h3 className="font-headline text-2xl font-extrabold mb-2 text-on-surface">
+              <h3 className="font-headline text-2xl font-extrabold mb-2 text-foreground">
                 {isAr ? 'تم استلام طلبك!' : 'Votre demande a bien été reçue !'}
               </h3>
               <p className="text-on-surface-variant text-sm">
@@ -113,15 +115,17 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
             </div>
           ) : (
             <>
-              <h3 className="font-headline text-3xl font-extrabold mb-2 text-on-surface">
+              <div className="badge-primary mb-4 w-fit">
+                {isAr ? 'حجز موعد' : 'Rendez-vous'}
+              </div>
+              <h3 className="font-headline text-2xl lg:text-3xl font-extrabold mb-2 text-foreground">
                 {t.booking.title}
               </h3>
-              <p className="text-on-surface-variant text-sm mb-8">
+              <p className="text-on-surface-variant text-sm mb-8 leading-relaxed">
                 {isAr ? 'احجز استشارتك في خطوات بسيطة.' : 'Réservez votre consultation en quelques clics.'}
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Honeypot - real visitors never see this field (off-screen + tabIndex -1 + autoComplete off) */}
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <input
                   type="text"
                   name="website"
@@ -134,38 +138,38 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1">{t.booking.first_name}</label>
+                    <label className="block text-xs font-semibold text-on-surface-variant mb-2">{t.booking.first_name}</label>
                     <input name="firstName" value={formData.firstName} onChange={handleInputChange} required
-                      className="w-full bg-surface border-none rounded-2xl py-4 px-6 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                      className={inputClass}
                       placeholder={t.booking.first_name} type="text" />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1">{t.booking.last_name}</label>
+                    <label className="block text-xs font-semibold text-on-surface-variant mb-2">{t.booking.last_name}</label>
                     <input name="lastName" value={formData.lastName} onChange={handleInputChange}
-                      className="w-full bg-surface border-none rounded-2xl py-4 px-6 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                      className={inputClass}
                       placeholder={t.booking.last_name} type="text" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1">{isAr ? 'الهاتف' : 'Téléphone'}</label>
+                    <label className="block text-xs font-semibold text-on-surface-variant mb-2">{isAr ? 'الهاتف' : 'Téléphone'}</label>
                     <input name="phone" value={formData.phone} onChange={handleInputChange} required
-                      className="w-full bg-surface border-none rounded-2xl py-4 px-6 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
-                      placeholder="+212 6XX XXX XXX" type="tel" />
+                      className={inputClass}
+                      placeholder="06XX XXX XXX" type="tel" />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1">Email</label>
+                    <label className="block text-xs font-semibold text-on-surface-variant mb-2">Email</label>
                     <input name="email" value={formData.email} onChange={handleInputChange}
-                      className="w-full bg-surface border-none rounded-2xl py-4 px-6 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                      className={inputClass}
                       placeholder="email@exemple.com" type="email" />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1">{isAr ? 'الخدمة' : 'Service souhaité'}</label>
+                  <label className="block text-xs font-semibold text-on-surface-variant mb-2">{isAr ? 'الخدمة' : 'Service souhaité'}</label>
                   <select name="service" value={formData.service} onChange={handleInputChange} required
-                    className="w-full bg-surface border-none rounded-2xl py-4 px-6 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none">
+                    className={inputClass}>
                     <option value="">{isAr ? 'اختر خدمة' : 'Choisir un service'}</option>
                     {SERVICE_OPTIONS.map((s) => (
                       <option key={s} value={s}>{t.services[s]}</option>
@@ -175,25 +179,25 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1">{isAr ? 'التاريخ' : 'Date souhaitée'}</label>
+                    <label className="block text-xs font-semibold text-on-surface-variant mb-2">{isAr ? 'التاريخ' : 'Date souhaitée'}</label>
                     <input name="date" value={formData.date} onChange={handleInputChange}
-                      className="w-full bg-surface border-none rounded-2xl py-4 px-6 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                      className={inputClass}
                       type="date" min={new Date().toISOString().split('T')[0]} />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-on-surface-variant mb-2 ml-1">{t.booking.time}</label>
+                    <label className="block text-xs font-semibold text-on-surface-variant mb-2">{t.booking.time}</label>
                     <input name="time" value={formData.time} onChange={handleInputChange}
-                      className="w-full bg-surface border-none rounded-2xl py-4 px-6 text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                      className={inputClass}
                       type="time" />
                   </div>
                 </div>
 
-                {status === 'error' && <p className="text-red-500 text-sm">{error}</p>}
+                {status === 'error' && <p className="text-destructive text-sm">{error}</p>}
 
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="w-full bg-primary text-white py-5 rounded-2xl font-bold hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 mt-4 disabled:opacity-70"
+                  className="w-full btn-primary !py-4 !rounded-xl flex items-center justify-center gap-2.5 mt-2 disabled:opacity-60"
                 >
                   {status === 'loading' ? <Loader2 size={20} className="animate-spin" /> : (
                     <CalendarDays size={20} />
@@ -204,7 +208,7 @@ export default function BookingSection({ lang, contact }: { lang?: string; conta
                 <button
                   type="button"
                   onClick={handleWhatsApp}
-                  className="w-full bg-[#25D366]/10 text-[#128C7E] py-3.5 rounded-2xl font-bold hover:bg-[#25D366]/20 transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+                  className="w-full bg-accent/10 text-accent py-3.5 rounded-xl font-semibold hover:bg-accent/15 transition-all duration-200 flex items-center justify-center gap-2 text-sm cursor-pointer"
                 >
                   <MessageCircle size={18} />
                   {isAr ? 'أو راسلنا عبر واتساب' : 'Ou contactez-nous sur WhatsApp'}

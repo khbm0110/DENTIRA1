@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, usePathname } from 'next/navigation';
 import dictionary from '@/lib/i18n/dictionary';
@@ -77,26 +77,28 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
   ];
 
   return (
-    <>
+    <React.Fragment>
       <nav
         id="main-nav"
-        className={`fixed left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 backdrop-blur-2xl rounded-full px-4 md:px-6 flex justify-between items-center border border-white/60 transition-all duration-500 ease-[0.25,1,0.5,1] ${
-          isScrolled ? 'top-4 bg-white/80 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.04)]' : 'top-6 bg-white/50 py-4 shadow-[0_4px_20px_rgb(0,0,0,0.02)]'
+        className={`fixed left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 backdrop-blur-2xl rounded-2xl px-4 md:px-6 flex justify-between items-center border transition-all duration-500 ease-[0.25,1,0.5,1] ${
+          isScrolled ? 'top-4 bg-white/90 py-3 shadow-soft-lg border-outline-variant/40' : 'top-6 bg-white/60 py-4 shadow-soft border-white/40'
         }`}>
         <Link href={`/${lang}`} className="flex items-center gap-2 group cursor-pointer">
-          <Smile className="text-primary transition-transform group-hover:rotate-12" size={26} strokeWidth={2.2} />
-          <div className="text-xl font-bold tracking-tight">{t.common.brand_name}</div>
+          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Smile className="text-primary transition-transform group-hover:rotate-12" size={20} strokeWidth={2.2} />
+          </div>
+          <div className="text-xl font-bold tracking-tight text-foreground">{t.common.brand_name}</div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-1 bg-white/40 p-1 rounded-full border border-white/50">
+        <div className="hidden md:flex items-center gap-1 bg-surface/60 p-1 rounded-2xl">
           {navLinks.map((link, index) => (
             <Link key={link.href} href={link.href} passHref legacyBehavior>
                  <a
                     onClick={(e) => handleNavClick(e, link.href)}
-                    className={`relative px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ease-out cursor-pointer ${
+                    className={`relative px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all duration-300 ease-out cursor-pointer ${
                       pathname === link.href 
-                        ? 'text-primary bg-white shadow-sm' 
-                        : 'text-on-surface-variant hover:text-on-surface hover:bg-white/60'
+                        ? 'text-primary bg-white shadow-soft' 
+                        : 'text-on-surface-variant hover:text-foreground hover:bg-white/60'
                     }`}
                 >
                     {link.label}
@@ -108,9 +110,9 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
         <div className="hidden md:flex items-center gap-3">
           <a
             href={`tel:${phoneNumber}`}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-on-surface hover:text-primary transition-all duration-300"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-semibold text-on-surface-variant hover:text-primary transition-all duration-300"
           >
-            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
               <Phone size={16} className="text-primary" />
             </div>
             <span dir="ltr" className="hidden lg:inline">{displayPhoneNumber}</span>
@@ -122,7 +124,7 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
 
           <button 
             onClick={handleBookingClick}
-            className="bg-primary text-white px-7 py-2.5 rounded-full text-sm font-bold shadow-[0_4px_14px_0_rgb(0,105,113,0.39)] hover:shadow-[0_6px_20px_rgba(0,105,113,0.23)] hover:-translate-y-0.5 transition-all duration-300">
+            className="btn-primary !py-2.5 !px-6 !text-sm !rounded-xl">
             {t.nav.booking}
           </button>
         </div>
@@ -139,12 +141,12 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <>
+          <React.Fragment>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              className="fixed inset-0 bg-[#0C4A6E]/40 backdrop-blur-sm z-40 md:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
@@ -152,13 +154,15 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white z-50 md:hidden overflow-y-auto"
+              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-white z-50 md:hidden overflow-y-auto shadow-soft-xl"
             >
               <div className="p-6">
                 <div className="flex justify-between items-center mb-8">
                   <Link href={`/${lang}`} className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Smile className="text-primary" size={26} strokeWidth={2.2} />
-                    <span className="text-xl font-bold">{t.common.brand_name}</span>
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Smile className="text-primary" size={20} strokeWidth={2.2} />
+                    </div>
+                    <span className="text-xl font-bold text-foreground">{t.common.brand_name}</span>
                   </Link>
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -187,7 +191,7 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
 
                 <button 
                   onClick={handleBookingClick}
-                  className="w-full bg-primary text-white py-4 rounded-2xl font-bold text-sm hover:bg-primary-dark transition-all clinical-shadow btn-hover mb-6">
+                  className="w-full btn-primary mb-6">
                   {t.nav.booking}
                 </button>
 
@@ -211,10 +215,10 @@ export default function NavigationBar({ contact }: { contact?: ContactInfo }) {
                 </div>
               </div>
             </motion.div>
-          </>
+          </React.Fragment>
         )}
       </AnimatePresence>
       <BookingModal ref={bookingModalRef} contact={contact} />
-    </>
+    </React.Fragment>
   );
 }

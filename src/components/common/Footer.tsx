@@ -40,8 +40,8 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
   ];
 
   return (
-    <footer id="contact" className="bg-gradient-to-br from-surface to-teal-50 pt-16 md:pt-32 pb-12 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <footer id="contact" className="bg-[#0C4A6E] pt-16 md:pt-32 pb-12 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
 
@@ -50,32 +50,34 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="bg-primary text-white rounded-[2.5rem] p-8 sm:p-10 lg:p-14 mb-12 md:mb-20 shadow-[0_20px_50px_rgb(0,105,113,0.3)] relative overflow-hidden"
+          className="bg-white rounded-2xl p-8 sm:p-10 lg:p-14 mb-12 md:mb-20 shadow-soft-xl relative overflow-hidden"
         >
-          <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-2xl"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/10 rounded-full blur-2xl"></div>
+          <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div>
-              <h2 className="font-headline text-3xl lg:text-4xl font-extrabold tracking-tight mb-4">
+              <h2 className="font-headline text-3xl lg:text-4xl font-extrabold tracking-tight mb-4 text-foreground">
                 {t.footer.title}
               </h2>
-              <p className="text-white/80 text-lg">
-                {lang === 'ar' ? 'ابق على اطلاع بآخر أخبارنا ونصائحنا لطب الأسنان.' : 'Restez informé de nos dernières actualités et conseils dentaires.'}
+              <p className="text-on-surface-variant text-lg">
+                {lang === 'ar' ? 'ابق على اطلاع بآخر أخبارنا ونصائحنا لطب الأسنان.' : "Restez inform\u00e9 de nos derni\u00e8res actualit\u00e9s et conseils dentaires."}
               </p>
             </div>
             <NewsletterForm placeholder={t.footer.email_placeholder} buttonText={t.footer.subscribe} lang={lang} />
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-outline-variant/60 pb-16 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-white/10 pb-16 mb-8">
           <div className="col-span-1 lg:col-span-1">
             <div className="flex items-center gap-2 mb-6">
-              <Smile className="text-primary" size={26} strokeWidth={2.2} />
-              <div className="text-xl font-bold text-on-surface">{t.common.brand_name}</div>
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Smile className="text-primary" size={20} strokeWidth={2.2} />
+              </div>
+              <div className="text-xl font-bold text-white">{t.common.brand_name}</div>
             </div>
-            <p className="text-on-surface-variant text-sm leading-relaxed mb-6 pr-4">
-              {lang === 'ar' ? 'عيادتكم الموثوقة للحصول على رعاية أسنان متميزة بالدار البيضاء.' : "Votre clinique de confiance pour des soins dentaires d'excellence à Casablanca."}
+            <p className="text-white/50 text-sm leading-relaxed mb-6 pr-4">
+              {lang === 'ar' ? 'عيادتكم الموثوقة للحصول على رعاية أسنان متميزة بالدار البيضاء.' : "Votre clinique de confiance pour des soins dentaires d'excellence \u00e0 Casablanca."}
             </p>
             {social && social.length > 0 && (
               <div className="flex gap-3">
@@ -85,7 +87,7 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
                     href={s.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-on-surface hover:text-primary hover:shadow-md transition-all shadow-sm"
+                    className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white/60 hover:bg-primary/20 hover:text-primary transition-all"
                   >
                     <span className="sr-only">{s.platform}</span>
                     {SOCIAL_ICONS[s.platform.toLowerCase()] || <span className="text-xs font-bold uppercase">{s.platform.slice(0, 2)}</span>}
@@ -96,38 +98,38 @@ export default function Footer({ contact, social }: { contact?: ContactInfo; soc
           </div>
 
           <div>
-            <h6 className="text-sm font-bold text-on-surface mb-6">{t.footer.company}</h6>
-            <ul className="space-y-4 text-sm font-medium text-on-surface-variant">
+            <h6 className="text-sm font-bold text-white mb-6">{t.footer.company}</h6>
+            <ul className="space-y-4 text-sm font-medium text-white/50">
               {quickLinks.map((link) => (
-                <li key={link.href}><a className="hover:text-primary transition-colors" href={link.href}>{link.label}</a></li>
+                <li key={link.href}><a className="hover:text-white transition-colors" href={link.href}>{link.label}</a></li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h6 className="text-sm font-bold text-on-surface mb-6">{t.footer.resources}</h6>
-            <ul className="space-y-4 text-sm font-medium text-on-surface-variant">
+            <h6 className="text-sm font-bold text-white mb-6">{t.footer.resources}</h6>
+            <ul className="space-y-4 text-sm font-medium text-white/50">
               {resourceLinks.map((link) => (
-                <li key={link.href}><a className="hover:text-primary transition-colors" href={link.href}>{link.label}</a></li>
+                <li key={link.href}><a className="hover:text-white transition-colors" href={link.href}>{link.label}</a></li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h6 className="text-sm font-bold text-on-surface mb-6">Contact</h6>
-            <ul className="space-y-4 text-sm font-medium text-on-surface-variant">
-              <li><a className="hover:text-primary transition-colors block" href={`mailto:${email}`}>{email}</a></li>
-              <li><a className="hover:text-primary transition-colors block" href={`tel:${phone}`} dir="ltr" style={{ unicodeBidi: 'isolate' }}>{phone}</a></li>
+            <h6 className="text-sm font-bold text-white mb-6">Contact</h6>
+            <ul className="space-y-4 text-sm font-medium text-white/50">
+              <li><a className="hover:text-white transition-colors block" href={`mailto:${email}`}>{email}</a></li>
+              <li><a className="hover:text-white transition-colors block" href={`tel:${phone}`} dir="ltr" style={{ unicodeBidi: 'isolate' }}>{phone}</a></li>
               <li className="leading-relaxed">{address}</li>
             </ul>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center text-sm font-medium text-on-surface-variant gap-4">
-          <p>© {new Date().getFullYear()} {t.common.brand_name}. {t.footer.rights}</p>
+        <div className="flex flex-col md:flex-row justify-between items-center text-sm font-medium text-white/40 gap-4">
+          <p>{`© ${new Date().getFullYear()} ${t.common.brand_name}. ${t.footer.rights}`}</p>
           <div className="flex gap-6">
-            <a className="hover:text-primary transition-colors" href="#">{t.footer.terms}</a>
-            <a className="hover:text-primary transition-colors" href="#">{t.footer.privacy}</a>
+            <a className="hover:text-white transition-colors" href="#">{t.footer.terms}</a>
+            <a className="hover:text-white transition-colors" href="#">{t.footer.privacy}</a>
           </div>
         </div>
       </div>
